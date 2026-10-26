@@ -11,12 +11,15 @@
     theme: {
       extend: {
         colors: {
-          brand: { 50:'#eef4ff',100:'#dbe7fe',200:'#bfd4fe',300:'#93b4fd',400:'#6190fa',500:'#3b6cf6',600:'#254ceb',700:'#1d3ad8',800:'#1e31af',900:'#1e2e8a',950:'#172054' },
-          ink: '#0b1220',
-          paper: '#f6f8fc'
+          /* Navy blue — primary */
+          brand: { 50:'#f0f4fa',100:'#dde6f2',200:'#bccddd',300:'#8faac7',400:'#5b80a8',500:'#345c85',600:'#1f4470',700:'#173658',800:'#122b47',900:'#0d2138',950:'#081428' },
+          /* Gold — accent */
+          gold: { 50:'#fbf7ec',100:'#f5ecd3',200:'#ead7a4',300:'#dcc06d',400:'#c9a83f',500:'#b8912a',600:'#9a7620',700:'#7c5e1c',800:'#634b1a',900:'#4c3a17',950:'#33270f' },
+          ink: '#1b2735',
+          paper: '#f5f6f8'
         },
         fontFamily: { display:['"Plus Jakarta Sans"','Inter','system-ui','sans-serif'], body:['Inter','system-ui','sans-serif'] },
-        boxShadow: { card:'0 1px 2px rgba(16,24,40,.06),0 8px 24px -12px rgba(16,24,40,.18)', glow:'0 0 0 4px rgba(59,108,246,.12)' }
+        boxShadow: { card:'0 1px 2px rgba(16,24,40,.06),0 4px 12px -6px rgba(16,24,40,.10)', glow:'0 0 0 3px rgba(31,68,112,.12)' }
       }
     }
   }
@@ -24,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%233b6cf6'/%3E%3Cpath d='M7 8h10M7 12h10M7 16h6' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23122b47'/%3E%3Cpath d='M7 8h10M7 12h10M7 16h6' stroke='%23c9a83f' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
 </head>
 <body class="font-body bg-paper text-ink antialiased min-h-screen flex flex-col">
 
@@ -32,9 +35,9 @@
 <header class="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-slate-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
     <a href="#" class="flex items-center gap-2.5 shrink-0" onclick="LD.goStep(1);return false;">
-      <span class="w-9 h-9 rounded-xl bg-brand-600 text-white grid place-items-center shadow-card font-display font-extrabold">L</span>
+      <span class="w-9 h-9 rounded-xl bg-brand-800 text-white grid place-items-center shadow-card font-display font-extrabold border-b-2 border-gold-400">L</span>
       <span class="font-display font-extrabold text-lg tracking-tight">Letter<span class="text-brand-600">Desk</span>
-        <span class="hidden sm:inline-block ml-2 text-[10px] font-bold uppercase tracking-widest bg-brand-50 text-brand-700 border border-brand-200 rounded-full px-2 py-0.5 align-middle">RA · TA Studio</span>
+        <span class="hidden sm:inline-block ml-2 text-[10px] font-bold uppercase tracking-widest bg-gold-50 text-gold-700 border border-gold-200 rounded-full px-2 py-0.5 align-middle">RA · TA Studio</span>
       </span>
     </a>
     <nav class="hidden md:flex items-center gap-1 text-sm font-medium text-slate-600">
@@ -43,7 +46,8 @@
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="5" onclick="LD.goProfile()">My Academic Profile</button>
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="3" onclick="LD.openModal('stipendModal')">Stipend Insights</button>
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="4" onclick="LD.openModal('howModal')">How It Works</button>
-      <button class="px-3 py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-bold shadow-sm" onclick="LD.openModal('publishModal')" title="Publish this portal online">🚀 Publish</button>
+      <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100 text-brand-700 font-semibold" data-nav="6" onclick="LD.goVerify()">Verify Professor</button>
+      <button class="px-3 py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-bold shadow-sm" onclick="LD.openModal('publishModal')" title="Publish this portal online">Publish</button>
     </nav>
     <div class="flex items-center gap-2">
       <span id="hdr-count" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 bg-slate-100 rounded-full px-3 py-1.5">
@@ -64,56 +68,57 @@
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goProfile();LD.closeMobile()">👤 My Academic Profile</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openModal('stipendModal');LD.closeMobile()">Stipend Insights</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openModal('howModal');LD.closeMobile()">How It Works</button>
-    <button class="block w-full text-left px-3 py-2 rounded-lg bg-brand-600 text-white text-sm font-bold mt-1" onclick="LD.openModal('publishModal');LD.closeMobile()">🚀 Publish this portal</button>
+    <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goVerify();LD.closeMobile()">Verify Professor &amp; Email</button>
+    <button class="block w-full text-left px-3 py-2 rounded-lg bg-brand-600 text-white text-sm font-bold mt-1" onclick="LD.openModal('publishModal');LD.closeMobile()">Publish this portal</button>
   </div>
 </header>
 
 <main class="flex-1">
   <!-- ===================== HERO ===================== -->
-  <section class="bg-gradient-to-b from-brand-950 via-brand-900 to-brand-800 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-14 grid lg:grid-cols-[1.2fr_.8fr] gap-10 items-center">
+  <section class="bg-brand-900 text-white border-b-4 border-gold-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-12 grid lg:grid-cols-[1.2fr_.8fr] gap-10 items-center">
       <div>
-        <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-white/10 border border-white/20 rounded-full px-3 py-1.5 mb-4">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Live data · OpenAlex · Semantic Scholar · Crossref
+        <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-white/5 border border-white/15 rounded-full px-3 py-1.5 mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-gold-400"></span> Live data · OpenAlex · Semantic Scholar · Crossref
         </p>
         <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight">
-          Get funded RA &amp; TA positions<br class="hidden sm:block"/> through <span class="text-brand-300">smarter outreach.</span>
+          Get funded RA &amp; TA positions<br class="hidden sm:block"/> through <span class="text-gold-400">better-targeted outreach.</span>
         </h1>
-        <p class="mt-4 text-brand-100/90 max-w-xl leading-relaxed">
+        <p class="mt-4 text-slate-300 max-w-xl leading-relaxed">
           Built for international graduate students. Search real professor research with h-indexes and paper DOIs,
           verify emails live, and generate <strong class="text-white">fact-checked drafts (~120–180 words)</strong> — every claim sourced, no AI clichés.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
-          <button onclick="LD.goStep(1)" class="px-5 py-3 rounded-xl bg-white text-brand-800 font-bold shadow-card hover:bg-brand-50 transition">Start Free Search →</button>
-          <button onclick="LD.loadDemo()" class="px-5 py-3 rounded-xl bg-brand-600/40 border border-white/25 font-semibold hover:bg-brand-600/60 transition">▶ Load Example Data</button>
+          <button onclick="LD.goStep(1)" class="px-5 py-3 rounded-xl bg-gold-400 hover:bg-gold-300 text-brand-900 font-bold shadow-card transition">Start Free Search →</button>
+          <button onclick="LD.loadDemo()" class="px-5 py-3 rounded-xl bg-transparent border border-white/30 hover:bg-white/10 font-semibold transition">Load Example Data</button>
         </div>
-        <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-200">
-          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> No sign-up required</span>
-          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> Free Groq / Llama 3 mode</span>
-          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> Configurable word limit (default 180)</span>
+        <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-300">
+          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> No sign-up required</span>
+          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> Free Groq / Llama 3 mode</span>
+          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> Configurable word limit (default 180)</span>
         </div>
       </div>
       <div class="hidden lg:block">
-        <div class="bg-white/10 backdrop-blur rounded-2xl border border-white/15 p-5 shadow-2xl">
-          <div class="flex items-center justify-between text-xs font-semibold text-brand-200 mb-3">
+        <div class="bg-white/5 rounded-2xl border border-white/15 p-5">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-300 mb-3">
             <span>WORKFLOW PREVIEW</span>
-            <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded-full">illustration only</span>
+            <span class="bg-gold-400/15 text-gold-300 px-2 py-0.5 rounded-full">illustration only</span>
           </div>
           <div class="space-y-2.5 text-[13px] leading-relaxed">
-            <div class="rounded-xl bg-white/10 border border-white/10 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-brand-300 mb-1">1 · Search</p>
-              <p class="text-brand-100">Live publications, h-index, DOI — merged from OpenAlex, Semantic Scholar and Crossref.</p>
+            <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-gold-400 mb-1">1 · Search</p>
+              <p class="text-slate-200">Live publications, h-index, DOI — merged from OpenAlex, Semantic Scholar and Crossref.</p>
             </div>
-            <div class="rounded-xl bg-white/10 border border-white/10 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-brand-300 mb-1">2 · Verify</p>
-              <p class="text-brand-100">Four honest email levels: syntax → official listing → domain MX → mailbox. Never guessed.</p>
+            <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-gold-400 mb-1">2 · Verify</p>
+              <p class="text-slate-200">Four honest email levels: syntax → official listing → domain MX → mailbox. Never guessed.</p>
             </div>
-            <div class="rounded-xl bg-white/10 border border-white/10 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-brand-300 mb-1">3 · Draft</p>
-              <p class="text-brand-100">120–180 words, every claim sourced to a DOI or your own confirmed profile — no invented funding.</p>
+            <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-gold-400 mb-1">3 · Draft</p>
+              <p class="text-slate-200">120–180 words, every claim sourced to a DOI or your own confirmed profile — no invented funding.</p>
             </div>
           </div>
-          <p class="mt-3 text-[11px] text-brand-200/80">Run a real search, or press <b class="text-white">Load Example Data</b> to explore the workflow with example-sandbox records.</p>
+          <p class="mt-3 text-[11px] text-slate-400">Run a real search, or press <b class="text-white">Load Example Data</b> to explore the workflow with example-sandbox records.</p>
         </div>
       </div>
     </div>
@@ -165,7 +170,7 @@
           <h2 class="font-display font-extrabold text-xl">Find professors funding your field</h2>
           <p class="text-sm text-slate-500 mt-1">Multi-engine search fetches live publications, h-indexes, citations and DOIs.</p>
         </div>
-        <span class="text-xs font-semibold text-slate-500 bg-slate-100 rounded-full px-3 py-1.5">⚡ Runs entirely in your browser — free public APIs</span>
+        <span class="text-xs font-semibold text-slate-500 bg-slate-100 rounded-full px-3 py-1.5">Runs entirely in your browser — free public APIs</span>
       </div>
 
       <div class="grid md:grid-cols-[1.6fr_1fr_1fr_auto] gap-3 items-end">
@@ -195,7 +200,7 @@
       <!-- Geology-specific search filters -->
       <details id="geoFiltersBox" class="mt-4 rounded-xl border border-slate-200 bg-slate-50/70 open:bg-white" >
         <summary class="cursor-pointer select-none px-4 py-3 flex items-center justify-between list-none">
-          <span class="text-sm font-bold text-slate-700">🪨 Field &amp; supervisor filters <span class="font-medium text-slate-400">(research area · institution · country · degree · intake · availability)</span></span>
+          <span class="text-sm font-bold text-slate-700">Field &amp; supervisor filters <span class="font-medium text-slate-400">(research area · institution · country · degree · intake · availability)</span></span>
           <span class="text-slate-400 text-xs">▾</span>
         </summary>
         <div class="px-4 pb-4 pt-1 border-t border-slate-200">
@@ -236,7 +241,7 @@
         <button class="chip" onclick="LD.quick('hydrogeology groundwater modelling','Netherlands')">hydrogeology · NL</button>
         <button class="chip" onclick="LD.quick('glaciology ice sheet mass balance','Norway')">glaciology · NO</button>
         <button class="chip" onclick="LD.quick('seismology induced seismicity','Switzerland')">seismology · CH</button>
-        <button class="chip" onclick="LD.loadGeoDemo()">🪨 geology demo supervisors</button>
+        <button class="chip" onclick="LD.loadGeoDemo()">geology demo supervisors</button>
       </div>
 
       <!-- status -->
@@ -277,7 +282,7 @@
         <details class="p-4 sm:p-5">
           <summary class="cursor-pointer list-none flex items-center justify-between gap-2">
             <div>
-              <h3 class="font-display font-bold text-lg">🎯 Fundability ranking</h3>
+              <h3 class="font-display font-bold text-lg">Fundability ranking</h3>
               <p class="text-sm text-slate-500 mt-0.5">Two-stage engine: hard filters first, then transparent rank points. Not a probability of admission.</p>
             </div>
             <span class="text-slate-400 text-xs">▾</span>
@@ -409,14 +414,14 @@
           <div id="pubVerifyBody" class="mt-3 space-y-3"><p class="text-sm text-slate-400">No professor selected yet.</p></div>
         </div>
 
-        <div id="selProfMini" class="bg-gradient-to-br from-brand-50 to-white rounded-2xl border border-brand-200 p-5">
+        <div id="selProfMini" class="bg-brand-50 rounded-2xl border border-brand-200 border-l-4 border-l-gold-500 p-5">
           <p class="text-[11px] font-bold uppercase tracking-widest text-brand-600 mb-2">Selected professor</p>
           <p class="text-sm text-slate-500">None yet — go back to Step 1 and pick a profile card.</p>
         </div>
 
         <button onclick="LD.openModal('stipendModal')" class="w-full text-left bg-white rounded-2xl shadow-card border border-slate-200 p-5 hover:border-brand-300 transition group">
           <div class="flex items-center justify-between">
-            <span class="font-display font-bold group-hover:text-brand-700">💶 Departmental stipend insights</span>
+            <span class="font-display font-bold group-hover:text-brand-700">Departmental stipend insights</span>
             <span class="text-brand-600 font-bold text-sm">Open →</span>
           </div>
           <p class="text-sm text-slate-500 mt-1">Typical RA/TA pay by country &amp; level — know your worth before you write.</p>
@@ -458,7 +463,7 @@
           <label class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 rounded-full px-3 py-1.5 cursor-pointer"><input id="optAvailable" type="checkbox" class="rounded border-slate-300" checked/> Mention start date</label>
         </div>
 
-        <button id="genBtn" onclick="LD.generate()" class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-3.5 text-sm shadow-card transition">✍ Generate draft (~120–180 words)</button>
+        <button id="genBtn" onclick="LD.generate()" class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-3.5 text-sm shadow-card transition">Generate draft (~120–180 words)</button>
         <p id="genHint" class="text-[11px] text-slate-400 leading-snug"></p>
 
         <!-- Fact-provenance ledger: verified facts vs user profile vs generated language -->
@@ -473,7 +478,7 @@
         <div class="border-t border-slate-100 pt-4">
           <p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Email verification — 4 honest levels</p>
           <div id="emailCheck" class="text-sm space-y-2"><p class="text-slate-400">Select a professor with an email to run the layered check: format → official-page listing → domain MX records → mailbox deliverability.</p></div>
-          <button id="verifyBtn" onclick="LD.verifySelectedEmail()" class="hidden mt-2 w-full rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold px-4 py-2 text-xs transition">🛡 Run full verification ladder</button>
+          <button id="verifyBtn" onclick="LD.verifySelectedEmail()" class="hidden mt-2 w-full rounded-lg border border-brand-300 bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold px-4 py-2 text-xs transition">Run full verification ladder</button>
           <p class="mt-2 text-[10px] leading-snug text-slate-400">DNS/MX checks prove only that the <b>domain accepts mail</b>. No in-browser test can confirm a specific mailbox exists or receives messages — that needs an SMTP session, so LetterDesk marks it “not confirmed” instead of guessing.</p>
         </div>
       </div>
@@ -509,11 +514,11 @@
             <label class="flex items-start gap-2 text-sm cursor-pointer"><input id="apprPaper" type="checkbox" class="mt-1 rounded border-slate-300" onchange="LD.updateApprovalState()"/> <span>I <b>opened the cited paper</b> via its DOI/publisher link and the reference says what I claim it says.</span></label>
             <label class="flex items-start gap-2 text-sm cursor-pointer"><input id="apprAttach" type="checkbox" class="mt-1 rounded border-slate-300" onchange="LD.updateApprovalState()"/> <span>The attachments mentioned (<span id="apprAttachList">—</span>) are the files I will <b>really attach</b>.</span></label>
             <label class="flex items-start gap-2 text-sm cursor-pointer"><input id="apprApprove" type="checkbox" class="mt-1 rounded border-slate-300" onchange="LD.updateApprovalState()"/> <span><b>Final approval:</b> I approve this exact email for sending.</span></label>
-            <p id="approvalNote" class="text-[11px] font-bold text-rose-700">⛔ Sending stays locked until all five checks are ticked.</p>
+            <p id="approvalNote" class="text-[11px] font-bold text-rose-700">Sending stays locked until all five checks are ticked.</p>
           </div>
 
           <div class="mt-4 flex flex-wrap gap-2">
-            <button id="mailtoBtn" onclick="LD.openMailto()" disabled class="rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-4 py-2.5 text-sm transition">📨 Open in mail app</button>
+            <button id="mailtoBtn" onclick="LD.openMailto()" disabled class="rounded-lg bg-gold-500 hover:bg-gold-600 text-brand-950 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-4 py-2.5 text-sm transition">Open in mail app</button>
             <button onclick="LD.downloadDraft()" class="rounded-lg border border-slate-300 bg-white hover:bg-slate-50 font-bold px-4 py-2.5 text-sm transition">⬇ Download .txt</button>
             <button onclick="LD.togglePlain()" id="plainBtn" class="rounded-lg border border-slate-300 bg-white hover:bg-slate-50 font-bold px-4 py-2.5 text-sm transition">Show raw plain text</button>
           </div>
@@ -524,7 +529,7 @@
     <!-- Pipeline analytics (rendered by crm.js → LD.renderAnalytics into #analyticsBody) -->
     <div class="mt-6 bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
       <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
-        <h3 class="font-display font-bold text-lg">📊 Pipeline analytics</h3>
+        <h3 class="font-display font-bold text-lg">Pipeline analytics</h3>
         <p class="text-[11px] text-slate-400">Counts from your own OutreachRecords only — no fabricated metrics.</p>
       </div>
       <div id="analyticsBody" class="text-sm"><p class="text-slate-400">Save a draft to the pipeline to see analytics.</p></div>
@@ -533,10 +538,66 @@
     <!-- Outreach pipeline (rendered by crm.js → LD.renderPipeline into #pipelineTable) -->
     <div class="mt-6 bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
       <div class="flex items-center justify-between flex-wrap gap-2">
-        <h3 class="font-display font-bold text-lg">📌 Outreach pipeline</h3>
+        <h3 class="font-display font-bold text-lg">Outreach pipeline</h3>
         <button onclick="if(confirm('Delete ALL outreach records?')){ LD.db.outreach.length=0; LD.saveDb(); LD.renderPipeline && LD.renderPipeline(); LD.renderAnalytics && LD.renderAnalytics(); }" class="text-xs font-bold text-rose-600 hover:underline">Clear all</button>
       </div>
-      <div id="pipelineTable" class="mt-4 text-sm"><p class="text-slate-400">Saved drafts appear here. Progress: Not sent → Sent → Replied → Interview → Offer 🎉</p></div>
+      <div id="pipelineTable" class="mt-4 text-sm"><p class="text-slate-400">Saved drafts appear here. Progress: Not sent → Sent → Replied → Interview → Offer</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== PROFESSOR & EMAIL VERIFICATION TOOL ===================== -->
+  <section id="verifyTool" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-7">
+      <div class="flex flex-wrap items-start justify-between gap-3 mb-1">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-brand-800 text-gold-400 grid place-items-center shrink-0 border-b-2 border-gold-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.6-2A9 9 0 1112 3c2.5 0 4.8 1 6.5 2.7"/></svg>
+          </span>
+          <div>
+            <h2 class="font-display font-extrabold text-xl">Professor &amp; Email Verification Tool</h2>
+            <p class="text-sm text-slate-500 mt-0.5">Confirm a professor's identity and their contact address before you send a single word.</p>
+          </div>
+        </div>
+        <span class="text-xs font-semibold text-slate-500 bg-slate-100 rounded-full px-3 py-1.5">Runs in your browser · Google DNS-over-HTTPS</span>
+      </div>
+
+      <div class="mt-5 grid lg:grid-cols-[1.1fr_.9fr] gap-6 items-start">
+        <!-- Left: inputs -->
+        <div class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="vName">Professor name *</label>
+              <input id="vName" class="fld" placeholder="e.g. Ingrid Solheim" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="vInst">Institution *</label>
+              <input id="vInst" class="fld" placeholder="e.g. University of Oslo" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="vEmail">Email address *</label>
+              <input id="vEmail" type="email" class="fld" placeholder="e.g. i.solheim@medisin.uio.no" autocomplete="off" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="vSource">Official source URL <span class="normal-case font-medium text-slate-400">(faculty directory / lab page where you found this email — optional but strongest signal)</span></label>
+              <input id="vSource" type="url" class="fld" placeholder="https://…/staff/ingrid-solheim" autocomplete="off" />
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <button id="vRunBtn" onclick="LD.runVerification()" class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-3 text-sm shadow-card transition inline-flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-9-9m9 9h-9m0 0V3"/></svg>
+              Verify professor &amp; email
+            </button>
+            <button onclick="LD.resetVerification()" class="rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold px-4 py-3 text-sm transition">Clear</button>
+            <p id="vStatus" class="text-xs font-semibold text-slate-500"></p>
+          </div>
+          <p class="text-[11px] leading-snug text-slate-400">Honest scope: DNS/MX checks prove only that the <b>domain accepts mail</b>. No browser-only test can confirm a specific mailbox exists — that needs an SMTP session on a server, so this tool reports “not confirmed” instead of guessing. Identity confirmation always means checking the address against the institution's own directory page.</p>
+        </div>
+
+        <!-- Right: results -->
+        <div id="vResults" class="rounded-xl border border-slate-200 bg-slate-50/70 p-4 min-h-[220px]">
+          <p class="text-sm text-slate-400">No check run yet. Fill in the form and press <b>Verify professor &amp; email</b> — results appear here with a combined verdict.</p>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -680,6 +741,8 @@ surge ./letterdesk-publish.surge --domain your-name.surge.sh</pre>
 <script src="js/draft.js"></script>
 <script src="js/facts.js"></script>
 <script src="js/app.js"></script>
+<!-- ============ PROFESSOR & EMAIL VERIFICATION TOOL (js/profverify.js) ============ -->
+<script src="js/profverify.js"></script>
 <script src="js/publish.js"></script>
 </body>
 </html>

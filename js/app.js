@@ -185,7 +185,7 @@
   };
   function isLive(l){ return l.some(function(p){return (p.sources||[]).indexOf("demo")===-1;}); }
 
-  function fitColor(f){ return f>=80?"#10b981":f>=65?"#3b6cf6":f>=50?"#f59e0b":"#ef4444"; }
+  function fitColor(f){ return f>=80?"#10b981":f>=65?"#1f4470":f>=50?"#c9a83f":"#ef4444"; }
   function srcBadge(s){ return {openalex:'<span class="badge b-blue">OpenAlex</span>',semantic:'<span class="badge b-amber">S2</span>',crossref:'<span class="badge b-green">Crossref</span>',demo:'<span class="badge b-slate">demo</span>'}[s]||""; }
 
   function cardHTML(p){
@@ -295,7 +295,7 @@
     var pct = Math.round(Math.min(97,total));
     var C=326.7;
     ring.style.strokeDashoffset = (C - C*pct/100);
-    ring.setAttribute("stroke", pct>=75?"#10b981":pct>=55?"#3b6cf6":pct>=40?"#f59e0b":"#ef4444");
+    ring.setAttribute("stroke", pct>=75?"#10b981":pct>=55?"#1f4470":pct>=40?"#c9a83f":"#ef4444");
     num.textContent=pct;
     badge.textContent = pct>=75?"Strong odds":pct>=55?"Reasonable shot":pct>=40?"Longer shot":"Low odds";
     badge.className = "text-xs font-bold rounded-full px-2.5 py-1 " + (pct>=75?"bg-emerald-100 text-emerald-700":pct>=55?"bg-brand-100 text-brand-700":pct>=40?"bg-amber-100 text-amber-700":"bg-rose-100 text-rose-700");
@@ -416,7 +416,7 @@
   }
   LD.verifySelectedEmail = function(){
     var p=getSelected(); if(!p||!p.email){ LD.toast("No email to verify.","err"); return; }
-    $("emailCheck").innerHTML='<p class="text-brand-700 font-semibold animate-pulse">Querying dns.google (MX → A fallback)…</p>';
+    $("emailCheck").innerHTML='<p class="text-brand-700 font-semibold">Querying dns.google (MX → A fallback)…</p>';
     LD.verifyEmail(p.email).then(function(r){
       p.verified=r.level; paintEmailResult(p,r); LD.updateCardBadge(p); updateFeasibility();
     }).catch(function(e){
