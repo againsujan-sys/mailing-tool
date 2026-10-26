@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LetterDesk — Academic Outreach Studio for RA/TA Positions</title>
+<meta name="description" content="All-in-one outreach studio helping international graduate students secure funded RA & TA positions. Multi-engine research search, live email verification, and under-150-word drafts." />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: { 50:'#eef4ff',100:'#dbe7fe',200:'#bfd4fe',300:'#93b4fd',400:'#6190fa',500:'#3b6cf6',600:'#254ceb',700:'#1d3ad8',800:'#1e31af',900:'#1e2e8a',950:'#172054' },
+          ink: '#0b1220',
+          paper: '#f6f8fc'
+        },
+        fontFamily: { display:['"Plus Jakarta Sans"','Inter','system-ui','sans-serif'], body:['Inter','system-ui','sans-serif'] },
+        boxShadow: { card:'0 1px 2px rgba(16,24,40,.06),0 8px 24px -12px rgba(16,24,40,.18)', glow:'0 0 0 4px rgba(59,108,246,.12)' }
+      }
+    }
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%233b6cf6'/%3E%3Cpath d='M7 8h10M7 12h10M7 16h6' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+<body class="font-body bg-paper text-ink antialiased min-h-screen flex flex-col">
+
+<!-- ===================== HEADER ===================== -->
+<header class="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <a href="#" class="flex items-center gap-2.5 shrink-0" onclick="LD.goStep(1);return false;">
+      <span class="w-9 h-9 rounded-xl bg-brand-600 text-white grid place-items-center shadow-card font-display font-extrabold">L</span>
+      <span class="font-display font-extrabold text-lg tracking-tight">Letter<span class="text-brand-600">Desk</span>
+        <span class="hidden sm:inline-block ml-2 text-[10px] font-bold uppercase tracking-widest bg-brand-50 text-brand-700 border border-brand-200 rounded-full px-2 py-0.5 align-middle">RA · TA Studio</span>
+      </span>
+    </a>
+    <nav class="hidden md:flex items-center gap-1 text-sm font-medium text-slate-600">
+      <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="1" onclick="LD.goStep(1)">Find Professors</button>
+      <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="2" onclick="LD.goStep(2)">Outreach Drafts</button>
+      <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="3" onclick="LD.openModal('stipendModal')">Stipend Insights</button>
+      <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="4" onclick="LD.openModal('howModal')">How It Works</button>
+      <button class="px-3 py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-bold shadow-sm" onclick="LD.openModal('publishModal')" title="Publish this portal online">🚀 Publish</button>
+    </nav>
+    <div class="flex items-center gap-2">
+      <span id="hdr-count" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 bg-slate-100 rounded-full px-3 py-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-8 0v2M9 20H4v-2a4 4 0 018 0v2M15 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <span id="hdr-count-n">0</span>&nbsp;in pipeline
+      </span>
+      <button onclick="LD.openModal('settingsModal')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-500" title="Settings (API keys)">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 01-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 011.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </button>
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg hover:bg-slate-100" aria-label="Menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobileNav" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-2 space-y-1">
+    <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goStep(1);LD.closeMobile()">1 · Find Professors</button>
+    <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goStep(2);LD.closeMobile()">2 · Outreach Drafts</button>
+    <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openModal('stipendModal');LD.closeMobile()">Stipend Insights</button>
+    <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openModal('howModal');LD.closeMobile()">How It Works</button>
+    <button class="block w-full text-left px-3 py-2 rounded-lg bg-brand-600 text-white text-sm font-bold mt-1" onclick="LD.openModal('publishModal');LD.closeMobile()">🚀 Publish this portal</button>
+  </div>
+</header>
+
+<main class="flex-1">
+  <!-- ===================== HERO ===================== -->
+  <section class="bg-gradient-to-b from-brand-950 via-brand-900 to-brand-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-14 grid lg:grid-cols-[1.2fr_.8fr] gap-10 items-center">
+      <div>
+        <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-white/10 border border-white/20 rounded-full px-3 py-1.5 mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Live data · OpenAlex · Semantic Scholar · Crossref
+        </p>
+        <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight">
+          Get funded RA &amp; TA positions<br class="hidden sm:block"/> through <span class="text-brand-300">smarter outreach.</span>
+        </h1>
+        <p class="mt-4 text-brand-100/90 max-w-xl leading-relaxed">
+          Built for international graduate students. Search real professor research with h-indexes and paper DOIs,
+          verify emails live, and generate high-converting drafts <strong class="text-white">strictly under 150 words</strong> — no AI clichés.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button onclick="LD.goStep(1)" class="px-5 py-3 rounded-xl bg-white text-brand-800 font-bold shadow-card hover:bg-brand-50 transition">Start Free Search →</button>
+          <button onclick="LD.loadDemo()" class="px-5 py-3 rounded-xl bg-brand-600/40 border border-white/25 font-semibold hover:bg-brand-600/60 transition">▶ Load Demo Data</button>
+        </div>
+        <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-200">
+          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> No sign-up required</span>
+          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> Free Groq / Llama 3 mode</span>
+          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> 150-word hard limit</span>
+        </div>
+      </div>
+      <div class="hidden lg:block">
+        <div class="bg-white/10 backdrop-blur rounded-2xl border border-white/15 p-5 shadow-2xl">
+          <div class="flex items-center justify-between text-xs font-semibold text-brand-200 mb-3"><span>PROFESSOR MATCH</span><span class="bg-emerald-400/20 text-emerald-300 px-2 py-0.5 rounded-full">Feasibility 87%</span></div>
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-fuchsia-500 grid place-items-center font-display font-bold text-lg">EK</div>
+            <div><p class="font-bold">Dr. Elena Kowalski</p><p class="text-xs text-brand-200">Assoc. Prof · Computer Science · TU Munich</p></div>
+          </div>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div class="bg-white/10 rounded-lg py-2"><p class="font-display font-bold text-lg">34</p><p class="text-[10px] uppercase tracking-wide text-brand-200">h-index</p></div>
+            <div class="bg-white/10 rounded-lg py-2"><p class="font-display font-bold text-lg">128</p><p class="text-[10px] uppercase tracking-wide text-brand-200">Papers</p></div>
+            <div class="bg-white/10 rounded-lg py-2"><p class="text-[#7dd3fc] font-display font-bold text-lg">€2.1k</p><p class="text-[10px] uppercase tracking-wide text-brand-200">TV-L E13/mo</p></div>
+          </div>
+          <div class="mt-3 bg-white/90 text-ink rounded-xl p-3 text-[13px] leading-relaxed shadow">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-brand-600">Draft preview · 96 words</span><br/>
+            Dear Prof. Kowalski — your NeurIPS 2024 work on sparse attention (DOI:10.48550/arXiv.2402.xxxxx) matches my thesis on efficient transformers…
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STEP WIZARD BAR ===================== -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 -mt-6 relative z-10">
+    <div class="bg-white rounded-2xl shadow-card border border-slate-200 px-4 sm:px-8 py-4">
+      <ol id="stepper" class="flex items-center gap-2 sm:gap-4 list-none m-0 p-0 counter-reset:none">
+        <li class="step-item flex-1" data-step="1">
+          <button onclick="LD.goStep(1)" class="w-full flex items-center gap-3 group text-left">
+            <span class="step-dot w-9 h-9 shrink-0 rounded-full grid place-items-center font-display font-bold text-sm border-2 transition">1</span>
+            <span class="min-w-0"><span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Step 1</span><span class="block text-sm font-bold truncate">Search &amp; Select Professor</span></span>
+          </button>
+        </li>
+        <li class="hidden sm:block w-8 h-px bg-slate-200 shrink-0"></li>
+        <li class="step-item flex-1" data-step="2">
+          <button onclick="LD.goStep(2)" class="w-full flex items-center gap-3 group text-left">
+            <span class="step-dot w-9 h-9 shrink-0 rounded-full grid place-items-center font-display font-bold text-sm border-2 transition">2</span>
+            <span class="min-w-0"><span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Step 2</span><span class="block text-sm font-bold truncate">Your Profile &amp; Fit Score</span></span>
+          </button>
+        </li>
+        <li class="hidden sm:block w-8 h-px bg-slate-200 shrink-0"></li>
+        <li class="step-item flex-1" data-step="3">
+          <button onclick="LD.goStep(3)" class="w-full flex items-center gap-3 group text-left">
+            <span class="step-dot w-9 h-9 shrink-0 rounded-full grid place-items-center font-display font-bold text-sm border-2 transition">3</span>
+            <span class="min-w-0"><span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Step 3</span><span class="block text-sm font-bold truncate">Generate &amp; Send Draft</span></span>
+          </button>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ===================== STEP 1 : SEARCH ===================== -->
+  <section id="step-1" class="step-panel max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-7">
+      <div class="flex flex-wrap items-start justify-between gap-3 mb-5">
+        <div>
+          <h2 class="font-display font-extrabold text-xl">Find professors funding your field</h2>
+          <p class="text-sm text-slate-500 mt-1">Multi-engine search fetches live publications, h-indexes, citations and DOIs.</p>
+        </div>
+        <span class="text-xs font-semibold text-slate-500 bg-slate-100 rounded-full px-3 py-1.5">⚡ Runs entirely in your browser — free public APIs</span>
+      </div>
+
+      <div class="grid md:grid-cols-[1.6fr_1fr_1fr_auto] gap-3 items-end">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="q">Research topic or professor name</label>
+          <input id="q" type="text" placeholder="e.g. graph neural networks, solar perovskites, NLP…"
+                 class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="country">Country (optional)</label>
+          <select id="country" class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none">
+            <option value="">Anywhere</option><option>United States</option><option>United Kingdom</option><option>Germany</option><option>Canada</option><option>Australia</option><option>Netherlands</option><option>Switzerland</option><option>Sweden</option><option>France</option><option>Singapore</option><option>Japan</option><option>South Korea</option><option>Ireland</option><option>Denmark</option><option>Finland</option><option>Norway</option><option>New Zealand</option><option>Italy</option><option>Spain</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="engines">Data engines</label>
+          <select id="engines" class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none">
+            <option value="all">All 3 engines (recommended)</option>
+            <option value="openalex">OpenAlex only</option>
+            <option value="semantic">Semantic Scholar only</option>
+            <option value="crossref">Crossref only</option>
+          </select>
+        </div>
+        <button id="searchBtn" onclick="LD.search()" class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-3 text-sm shadow-card transition whitespace-nowrap">Search</button>
+      </div>
+
+      <div class="mt-3 flex flex-wrap gap-2 text-xs">
+        <span class="text-slate-400 font-semibold self-center">Try:</span>
+        <button class="chip" onclick="LD.quick('reinforcement learning robots','')">reinforcement learning</button>
+        <button class="chip" onclick="LD.quick('perovskite solar cells','Germany')">perovskite solar · DE</button>
+        <button class="chip" onclick="LD.quick('large language models','United States')">LLMs · US</button>
+        <button class="chip" onclick="LD.quick('epidemiology biostatistics','United Kingdom')">epidemiology · UK</button>
+        <button class="chip" onclick="LD.quick('computational fluid dynamics','Canada')">CFD · CA</button>
+      </div>
+
+      <!-- status -->
+      <div id="searchStatus" class="hidden mt-5">
+        <div class="flex items-center gap-3 text-sm font-semibold text-brand-700 mb-3">
+          <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/></svg>
+          Querying engines…
+        </div>
+        <div class="grid sm:grid-cols-3 gap-3" id="engineProgress"></div>
+      </div>
+
+      <div id="searchEmpty" class="mt-8 hidden text-center py-10">
+        <p class="text-4xl mb-2">🔎</p>
+        <p class="font-bold text-slate-700">No results yet</p>
+        <p class="text-sm text-slate-500">Enter a topic above, or press <em>Load Demo Data</em> to explore instantly.</p>
+      </div>
+      <div id="searchError" class="mt-5 hidden rounded-xl border border-rose-200 bg-rose-50 text-rose-800 p-4 text-sm"></div>
+
+      <!-- filters + results -->
+      <div id="resultsWrap" class="hidden mt-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h3 class="font-display font-bold text-lg">Matches <span id="resultCount" class="text-sm font-semibold text-slate-400"></span></h3>
+          <div class="flex items-center gap-2 text-sm">
+            <label class="font-semibold text-slate-500">Sort:</label>
+            <select id="sortBy" onchange="LD.renderResults()" class="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold">
+              <option value="fit">Best fit score</option><option value="hindex">Highest h-index</option><option value="recent">Most recent papers</option><option value="cited">Most cited</option>
+            </select>
+            <label class="ml-2 inline-flex items-center gap-1.5 font-semibold text-slate-500 cursor-pointer"><input id="onlyVerified" type="checkbox" class="rounded border-slate-300" onchange="LD.renderResults()"/> Verified emails only</label>
+          </div>
+        </div>
+        <div id="profCards" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <button id="toStep2Btn" onclick="LD.goStep(2)" disabled class="rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-6 py-3 text-sm shadow-card transition inline-flex items-center gap-2">
+          Continue with selected professor
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STEP 2 : PROFILE & FEASIBILITY ===================== -->
+  <section id="step-2" class="step-panel hidden max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6 items-start">
+      <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-7">
+        <h2 class="font-display font-extrabold text-xl">Tell us about you</h2>
+        <p class="text-sm text-slate-500 mt-1">Used to personalize drafts and compute acceptance feasibility. Stored only in your browser.</p>
+
+        <div class="mt-5 grid sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pName">Full name *</label>
+            <input id="pName" class="fld" placeholder="e.g. Aisha Rahman" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pDegree">Target degree</label>
+            <select id="pDegree" class="fld"><option>PhD</option><option>Masters (research)</option><option>Masters (coursework)</option><option>Postdoc</option></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pRole">Seeking</label>
+            <select id="pRole" class="fld"><option>Research Assistantship (RA)</option><option>Teaching Assistantship (TA)</option><option>RA + TA combined</option><option>Funded PhD seat</option></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pUni">Current university</label>
+            <input id="pUni" class="fld" placeholder="e.g. University of Dhaka" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pField">Field / discipline</label>
+            <input id="pField" class="fld" placeholder="e.g. Computer Science" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pTopic">Your thesis / research interest * <span class="normal-case font-medium text-slate-400">(drives the fit score)</span></label>
+            <textarea id="pTopic" rows="2" class="fld resize-none" placeholder="e.g. Efficient attention mechanisms for low-resource transformer inference on edge devices"></textarea>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">Skills &amp; tools <span class="normal-case font-medium text-slate-400">(press Enter to add)</span></label>
+            <div id="skillsBox" class="fld flex flex-wrap gap-1.5 items-center min-h-[48px] cursor-text" onclick="document.getElementById('skillInput').focus()">
+              <input id="skillInput" class="flex-1 min-w-[140px] outline-none text-sm bg-transparent" placeholder="Python, PyTorch, LaTeX…" onkeydown="LD.skillKey(event)"/>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pGpa">GPA / grade (optional)</label>
+            <input id="pGpa" class="fld" placeholder="e.g. 3.7/4.0 or First Class" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pEnglish">English test (optional)</label>
+            <select id="pEnglish" class="fld"><option value="">None / not required</option><option>IELTS 6.5</option><option>IELTS 7.0</option><option>IELTS 7.5+</option><option>TOEFL 90–100</option><option>TOEFL 100–110</option><option>TOEFL 110+</option><option>Duolingo 120+</option><option>Native / English-medium degree</option></select>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pExp">Relevant experience (one line each)</label>
+            <textarea id="pExp" rows="2" class="fld resize-none" placeholder="e.g. Co-authored 1 workshop paper on quantized transformers; RA intern at X lab (6 months)"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-6 flex flex-wrap justify-between gap-3">
+          <button onclick="LD.goStep(1)" class="rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold px-5 py-2.5 text-sm transition">← Back to search</button>
+          <button id="toStep3Btn" onclick="LD.toStep3()" class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-3 text-sm shadow-card transition inline-flex items-center gap-2">
+            Build my outreach draft
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Feasibility panel -->
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display font-bold">Acceptance feasibility</h3>
+            <span id="feasBadge" class="text-xs font-bold rounded-full px-2.5 py-1">—</span>
+          </div>
+          <div class="mt-4 flex items-center gap-5">
+            <div class="relative w-28 h-28 shrink-0">
+              <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90"><circle cx="60" cy="60" r="52" stroke="#e2e8f0" stroke-width="10" fill="none"/><circle id="feasRing" cx="60" cy="60" r="52" stroke="#3b6cf6" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" style="transition:stroke-dashoffset .8s ease, stroke .8s"/></svg>
+              <div class="absolute inset-0 grid place-items-center"><span id="feasNum" class="font-display font-extrabold text-2xl">0</span><span class="text-[10px] font-bold text-slate-400 -mt-4 ml-7">%</span></div>
+            </div>
+            <ul id="feasList" class="text-sm space-y-2 flex-1"></ul>
+          </div>
+          <p class="mt-4 text-[11px] leading-snug text-slate-400">Heuristic score from topical overlap with the professor's live publications, activity recency, h-index band, contactability and profile strength. It estimates likelihood of a <em>reply</em>, not admission.</p>
+        </div>
+
+        <div id="selProfMini" class="bg-gradient-to-br from-brand-50 to-white rounded-2xl border border-brand-200 p-5">
+          <p class="text-[11px] font-bold uppercase tracking-widest text-brand-600 mb-2">Selected professor</p>
+          <p class="text-sm text-slate-500">None yet — go back to Step 1 and pick a profile card.</p>
+        </div>
+
+        <button onclick="LD.openModal('stipendModal')" class="w-full text-left bg-white rounded-2xl shadow-card border border-slate-200 p-5 hover:border-brand-300 transition group">
+          <div class="flex items-center justify-between">
+            <span class="font-display font-bold group-hover:text-brand-700">💶 Departmental stipend insights</span>
+            <span class="text-brand-600 font-bold text-sm">Open →</span>
+          </div>
+          <p class="text-sm text-slate-500 mt-1">Typical RA/TA pay by country &amp; level — know your worth before you write.</p>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STEP 3 : DRAFT STUDIO ===================== -->
+  <section id="step-3" class="step-panel hidden max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="grid lg:grid-cols-[.9fr_1.1fr] gap-6 items-start">
+      <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6 space-y-5">
+        <div>
+          <h2 class="font-display font-extrabold text-xl">Draft engine</h2>
+          <p class="text-sm text-slate-500 mt-1">Every output is hard-capped at <strong>150 words</strong> and scrubbed of AI clichés.</p>
+        </div>
+
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Generation mode</p>
+          <div class="grid gap-2" id="modeRadios">
+            <label class="mode-opt"><input type="radio" name="mode" value="local" checked/><span class="opt"><span class="flex items-center justify-between"><b>⚡ Fast local template</b><span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 rounded-full px-2 py-0.5">FREE · OFFLINE</span></span><small>Instant, deterministic, cites their real DOI'd paper.</small></span></label>
+            <label class="mode-opt"><input type="radio" name="mode" value="groq"/><span class="opt"><span class="flex items-center justify-between"><b>🤖 Groq / Llama 3 AI</b><span class="text-[10px] font-bold text-brand-700 bg-brand-50 rounded-full px-2 py-0.5">FREE KEY</span></span><small>Polished rewrite via Groq's free API (add key in ⚙ settings).</small></span></label>
+            <label class="mode-opt"><input type="radio" name="mode" value="gptprompt"/><span class="opt"><span class="flex items-center justify-between"><b>📋 ChatGPT prompt builder</b><span class="text-[10px] font-bold text-amber-700 bg-amber-50 rounded-full px-2 py-0.5">NO KEY</span></span><small>Copies a perfect mega-prompt to paste into ChatGPT/Gemini/Claude.</small></span></label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="tone">Tone</label>
+            <select id="tone" class="fld"><option>Confident &amp; concise</option><option>Warm &amp; collaborative</option><option>Formal academic</option><option>Direct &amp; technical</option></select></div>
+          <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="askType">The ask</label>
+            <select id="askType" class="fld"><option>RA position + supervision</option><option>TA position</option><option>RA + TA combined</option><option>PhD inquiry / open to advice</option></select></div>
+          <div class="col-span-2"><label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="attach">Attachments mention</label>
+            <select id="attach" class="fld"><option>CV + transcripts</option><option>CV only</option><option>CV + writing sample</option><option>Nothing attached</option></select></div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <label class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 rounded-full px-3 py-1.5 cursor-pointer"><input id="optLinkedIn" type="checkbox" class="rounded border-slate-300"/> LinkedIn</label>
+          <label class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 rounded-full px-3 py-1.5 cursor-pointer"><input id="optScholar" type="checkbox" class="rounded border-slate-300"/> Google Scholar link</label>
+          <label class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 rounded-full px-3 py-1.5 cursor-pointer"><input id="optAvailable" type="checkbox" class="rounded border-slate-300" checked/> Mention start date</label>
+        </div>
+
+        <button id="genBtn" onclick="LD.generate()" class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-3.5 text-sm shadow-card transition">✍ Generate draft (&lt;150 words)</button>
+        <p id="genHint" class="text-[11px] text-slate-400 leading-snug"></p>
+
+        <div class="border-t border-slate-100 pt-4">
+          <p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Email health check</p>
+          <div id="emailCheck" class="text-sm space-y-2"><p class="text-slate-400">Select a professor with an email to run live MX + SMTP-mailbox verification via Google DNS-over-HTTPS.</p></div>
+          <button id="verifyBtn" onclick="LD.verifySelectedEmail()" class="hidden mt-2 w-full rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold px-4 py-2 text-xs transition">🛡 Verify deliverability now</button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-card border border-slate-200 overflow-hidden">
+        <div class="px-5 sm:px-6 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 bg-slate-50/60">
+          <div class="flex items-center gap-3 min-w-0">
+            <span id="wcPill" class="wc-pill shrink-0">0 / 150</span>
+            <span id="clichePill" class="shrink-0 text-[11px] font-bold rounded-full px-2.5 py-1 bg-slate-100 text-slate-500">clichés: 0</span>
+            <span id="readTime" class="hidden sm:inline text-[11px] font-semibold text-slate-400">~0s read</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="LD.generate()" class="btn-mini" title="Regenerate">↻ Regenerate</button>
+            <button onclick="LD.copyDraft()" class="btn-mini">📄 Copy text</button>
+            <button onclick="LD.saveToPipeline()" class="btn-mini !bg-brand-600 !text-white hover:!bg-brand-700">＋ Add to pipeline</button>
+          </div>
+        </div>
+        <div class="p-5 sm:p-6">
+          <div class="mb-4">
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="subj">Subject line</label>
+            <input id="subj" class="fld" placeholder="Subject appears here" />
+          </div>
+          <textarea id="draftBody" rows="14" class="w-full rounded-xl border border-slate-300 p-4 text-[14px] leading-relaxed font-[14px] focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition resize-y font-body" placeholder="Your generated draft will appear here. You can edit freely — the word meter keeps you under 150 words."></textarea>
+          <div id="aiNotice" class="hidden mt-3 rounded-xl border border-amber-200 bg-amber-50 text-amber-800 text-xs p-3 leading-relaxed"></div>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <button onclick="LD.openMailto()" class="rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 text-sm transition">📨 Open in mail app</button>
+            <button onclick="LD.downloadDraft()" class="rounded-lg border border-slate-300 bg-white hover:bg-slate-50 font-bold px-4 py-2.5 text-sm transition">⬇ Download .txt</button>
+            <button onclick="LD.togglePlain()" id="plainBtn" class="rounded-lg border border-slate-300 bg-white hover:bg-slate-50 font-bold px-4 py-2.5 text-sm transition">Show raw plain text</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h3 class="font-display font-bold text-lg">📌 Outreach pipeline</h3>
+        <button onclick="LD.clearPipeline()" class="text-xs font-bold text-rose-600 hover:underline">Clear all</button>
+      </div>
+      <div id="pipeline" class="mt-4 grid md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm"><p class="text-slate-400 col-span-full">Saved drafts appear here. Progress: Not sent → Sent → Replied → Interview → Offer 🎉</p></div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="border-t border-slate-200 bg-white mt-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+    <p><span class="font-display font-extrabold text-ink">Letter<span class="text-brand-600">Desk</span></span> — outreach studio for funded RA/TA seats. Data © OpenAlex · Semantic Scholar · Crossref · Email validity via Google DNS-over-HTTPS.</p>
+    <div class="flex gap-4">
+      <button class="hover:text-brand-700 font-semibold" onclick="LD.openModal('howModal')">How it works</button>
+      <button class="hover:text-brand-700 font-semibold" onclick="LD.openModal('stipendModal')">Stipends</button>
+      <button class="hover:text-brand-700 font-semibold" onclick="LD.openModal('settingsModal')">Settings</button>
+      <button class="hover:text-brand-700 font-semibold" onclick="LD.openModal('publishModal')">Publish</button>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== MODALS ===================== -->
+<div id="howModal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" onclick="if(event.target===this)LD.closeModal('howModal')">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-auto p-6 sm:p-8">
+    <div class="flex justify-between items-start"><h3 class="font-display font-extrabold text-2xl">How LetterDesk wins replies</h3><button onclick="LD.closeModal('howModal')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></div>
+    <div class="mt-5 space-y-5 text-sm leading-relaxed text-slate-600">
+      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">1</span><div><b class="text-ink">Evidence-first targeting.</b> We merge three scholarly APIs so every claim in your letter (paper title, DOI, year, topic overlap) is verifiably true. Professors spot generic spam instantly — specifics don't lie.</div></div>
+      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">2</span><div><b class="text-ink">Live email verification.</b> Using Google DNS-over-HTTPS we check MX records and mailbox signals, so your effort isn't wasted on dead addresses.</div></div>
+      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">3</span><div><b class="text-ink">The 150-word rule.</b> Busy PIs reply to letters they can read in 30 seconds. Our meter blocks sending-worthy drafts over 150 words and strips clichés like “I hope this finds you well”, “delve”, “game-changer”.</div></div>
+      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">4</span><div><b class="text-ink">Three generation modes.</b> Local templates (instant, offline), free Groq/Llama&nbsp;3 rewriting (bring your free API key), or the ChatGPT Prompt Builder which packages everything into one perfect prompt — no key needed.</div></div>
+      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">5</span><div><b class="text-ink">Know your market rate.</b> The stipend panel shows typical funded-position pay by country so you can evaluate offers quickly.</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="stipendModal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" onclick="if(event.target===this)LD.closeModal('stipendModal')">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] overflow-auto p-6 sm:p-8">
+    <div class="flex justify-between items-start"><h3 class="font-display font-extrabold text-2xl">Departmental stipend insights</h3><button onclick="LD.closeModal('stipendModal')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></div>
+    <p class="text-sm text-slate-500 mt-2">Typical monthly gross pay for funded RA/TA roles at public universities (approximate, 2025–26). Taxes, tuition waivers and health insurance vary — always confirm per-department.</p>
+    <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
+      <table class="w-full text-sm min-w-[560px]">
+        <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-3">Country</th><th class="px-4 py-3">RA (grad) /mo</th><th class="px-4 py-3">TA /mo</th><th class="px-4 py-3">Tuition</th><th class="px-4 py-3">Notes</th></tr></thead>
+        <tbody id="stipendRows" class="divide-y divide-slate-100"></tbody>
+      </table>
+    </div>
+    <p class="mt-3 text-[11px] text-slate-400">US figures reflect assistantship stipends where tuition is typically waived; German TV-L E13 ≈ 65–100% posts; Netherlands follows collective labour agreement scale 13.</p>
+  </div>
+</div>
+
+<div id="settingsModal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" onclick="if(event.target===this)LD.closeModal('settingsModal')">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8">
+    <div class="flex justify-between items-start"><h3 class="font-display font-extrabold text-2xl">Settings</h3><button onclick="LD.closeModal('settingsModal')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></div>
+    <div class="mt-5 space-y-4 text-sm">
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="groqKey">Groq API key <span class="normal-case font-medium text-emerald-600">(free tier)</span></label>
+        <input id="groqKey" type="password" class="fld" placeholder="gsk_…" autocomplete="off"/>
+        <p class="mt-1.5 text-[12px] text-slate-500 leading-snug">Get a free key at <a class="text-brand-700 font-semibold underline" href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>. Stored only in this browser (localStorage) and sent only to api.groq.com. Without a key, use Local Template or ChatGPT Prompt Builder.</p>
+      </div>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="modelSel">Groq model</label>
+        <select id="modelSel" class="fld"><option value="llama-3.3-70b-versatile">Llama 3.3 70B (best quality)</option><option value="llama-3.1-8b-instant">Llama 3.1 8B (fastest)</option><option value="mixtral-8x7b-32768">Mixtral 8x7B</option></select>
+      </div>
+      <div class="flex items-center justify-between bg-slate-50 rounded-xl p-3">
+        <span class="font-semibold text-slate-600">Auto-verify emails after search</span>
+        <label class="switch"><input id="autoVerify" type="checkbox" checked/><span class="slider"></span></label>
+      </div>
+      <button onclick="LD.saveSettings()" class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2.5 transition">Save settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PUBLISH MODAL ============ -->
+<div id="publishModal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" onclick="if(event.target===this)LD.closeModal('publishModal')">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-start">
+      <div>
+        <h3 class="font-display font-extrabold text-2xl">Publish LetterDesk</h3>
+        <p class="text-sm text-slate-500 mt-1">This portal is 100% static (HTML + Tailwind CDN + vanilla JS). Pick any free host below — no server needed.</p>
+      </div>
+      <button onclick="LD.closeModal('publishModal')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400">✕</button>
+    </div>
+
+    <div class="mt-5 rounded-xl border border-brand-200 bg-brand-50 p-4">
+      <div class="flex items-center justify-between">
+        <span class="font-bold text-brand-800 text-sm">Option A · Netlify Drop — fastest, ~30 seconds</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">Recommended</span>
+      </div>
+      <ol class="mt-2 text-[13px] text-slate-600 list-decimal ml-5 space-y-1 leading-relaxed">
+        <li>Click <b>Download Site (.zip)</b> below — it bundles <code>index.html</code>, <code>css/</code> and <code>js/</code>.</li>
+        <li>Unzip it, then open <a class="font-semibold underline" href="https://app.netlify.com/drop" target="_blank" rel="noopener">app.netlify.com/drop</a>.</li>
+        <li>Drag the unzipped folder onto the page. You instantly get a live <code>*.netlify.app</code> URL. No account needed for a temporary site; sign in free to keep it forever.</li>
+      </ol>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button id="btnBuildZip" onclick="LD.buildSiteZip()" class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2 text-sm transition">⬇ Download Site (.zip)</button>
+        <a href="https://app.netlify.com/drop" target="_blank" rel="noopener" class="rounded-xl border border-brand-300 text-brand-700 hover:bg-brand-100 font-bold px-4 py-2 text-sm transition inline-flex items-center">Open Netlify Drop ↗</a>
+        <span id="zipStatus" class="text-xs text-slate-500 self-center"></span>
+      </div>
+    </div>
+
+    <div class="mt-4 grid gap-3 text-[13px]">
+      <details class="rounded-xl border border-slate-200 p-3 group">
+        <summary class="cursor-pointer font-bold text-slate-700 list-none flex justify-between">Option B · GitHub Pages <span class="text-slate-400 group-open:rotate-90 transition">›</span></summary>
+        <pre id="ghSnippet" class="mt-2 bg-slate-900 text-slate-100 rounded-lg p-3 text-[11px] leading-relaxed overflow-x-auto whitespace-pre"># 1) push this folder to a GitHub repo, then:
+git push origin main
+# 2) In the repo: Settings → Pages → Source: "Deploy from a branch"
+#    Branch: main / (root) → Save. Live at:
+# https://&lt;username&gt;.github.io/&lt;repo&gt;/</pre>
+        <button onclick="LD.copyText(document.getElementById('ghSnippet').innerText,this)" class="mt-2 text-xs font-bold text-brand-700 hover:underline">Copy steps</button>
+      </details>
+      <details class="rounded-xl border border-slate-200 p-3">
+        <summary class="cursor-pointer font-bold text-slate-700 list-none flex justify-between">Option C · Vercel / Cloudflare Pages <span class="text-slate-400">›</span></summary>
+        <p class="mt-2 text-slate-600 leading-relaxed">Both accept the same static folder: import the GitHub repo (or upload directly), set <b>Framework preset: Other</b>, output directory <b>“.” (root)</b>, no build command. Cloudflare: <a class="font-semibold underline" href="https://pages.cloudflare.com/" target="_blank" rel="noopener">pages.cloudflare.com</a> · Vercel: <a class="font-semibold underline" href="https://vercel.com/new" target="_blank" rel="noopener">vercel.com/new</a></p>
+      </details>
+      <details class="rounded-xl border border-slate-200 p-3">
+        <summary class="cursor-pointer font-bold text-slate-700 list-none flex justify-between">Option D · Surge.sh from the terminal <span class="text-slate-400">›</span></summary>
+        <pre id="surgeSnippet" class="mt-2 bg-slate-900 text-slate-100 rounded-lg p-3 text-[11px] overflow-x-auto"># npm i -g surge   then, inside this folder:
+surge ./letterdesk-publish.surge --domain your-name.surge.sh</pre>
+        <button onclick="LD.copyText(document.getElementById('surgeSnippet').innerText,this)" class="mt-2 text-xs font-bold text-brand-700 hover:underline">Copy commands</button>
+      </details>
+    </div>
+
+    <p class="mt-4 text-[11px] text-slate-400 leading-snug">Privacy note: your Groq key & outreach pipeline stay in <b>this browser only</b> (localStorage) — publishing the site never uploads them. After deploying, add your key once in ⚙ Settings on the live URL.</p>
+  </div>
+</div>
+
+<div id="toastWrap" class="fixed bottom-4 right-4 z-[60] space-y-2 pointer-events-none"></div>
+
+<script src="js/publish.js"></script>
+<script src="js/data.js"></script>
+<script src="js/search.js"></script>
+<script src="js/draft.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
