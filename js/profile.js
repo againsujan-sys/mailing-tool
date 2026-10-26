@@ -19,19 +19,25 @@ var LD=(window.LD=window.LD||{});
   var KEY = "ld_profile_v2";
   var INTENT_KEY = "ld_intent_";        // per-professor selected interests: ld_intent_<profId>
 
-  /* ---------- editable defaults (Sujan Paudyal's starting profile) ----------
-     These are STARTING VALUES the user can change or clear — not fixed claims. */
+  /* ---------- PRIVACY: blank defaults only ----------
+     This file is PUBLIC JavaScript served to every visitor of the deployed site.
+     Personal academic data (name, home institution, grades, employer, personal
+     website) must NEVER be hard-coded here — anything written into these defaults
+     is exposed to the whole world and cached by CDNs. The previous build shipped a
+     real student's name, campus, percentage and portfolio URL in this object; it
+     has been removed. Every field now starts EMPTY and lives only in the owner's
+     browser (localStorage "ld_profile_v2"). */
   var DEFAULTS = {
-    basics:{ name:"Sujan Paudyal", headline:"Prospective MSc student · Geology",
-             email:"", phone:"", website:"sujanpaudyal.com.np",
+    basics:{ name:"", headline:"",
+             email:"", phone:"", website:"",
              linkedin:"", scholar:"", orcid:"" },
-    education:[ { degree:"B.Sc. Geology", institution:"Tri-Chandra Multiple Campus, Tribhuvan University",
-                  country:"Nepal", year:"2023", grade:"First Division · 60.35%",
-                  coursework:"Physical Geology, Mineralogy, Petrology, Structural Geology, Hydrogeology, Engineering Geology, Geomorphology, Paleontology, Remote Sensing & GIS",
-                  confirmed:true } ],
-    experience:[ { role:"Civil Sub-Engineer (Geotech support)", org:"Government transmission-line project (Nepal)",
-                   dates:"", responsibilities:"Site/geological observation support during foundation works; coordination of borehole & materials testing logistics.",
-                   skills:"geotechnical investigation, field surveys", confirmed:false } ],
+    education:[ { degree:"", institution:"",
+                  country:"", year:"", grade:"",
+                  coursework:"",
+                  confirmed:false } ],
+    experience:[ { role:"", org:"",
+                   dates:"", responsibilities:"",
+                   skills:"", confirmed:false } ],
     research:[ { title:"", status:"completed",   // completed | proposed — never mixed silently
                  methods:"", fieldwork:"", datasets:"", publications:"", presentations:"", confirmed:false } ],
     skills:[ "QGIS","geological mapping","field surveys","geotechnical investigation","laboratory methods" ],
@@ -147,7 +153,7 @@ var LD=(window.LD=window.LD||{});
           fld("pfHeadline","Headline / standing line",P.basics.headline)+
           fld("pfEmail","Preferred email *",P.contact.preferredEmail||P.basics.email,"you@example.com")+
           fld("pfPhone","Phone (optional)",P.contact.phone)+
-          fld("pfWebsite","Academic website / portfolio URL",P.basics.website,"e.g. sujanpaudyal.com.np")+
+          fld("pfWebsite","Academic website / portfolio URL",P.basics.website,"e.g. your-name.github.io")+
           fld("pfLinkedin","LinkedIn URL (optional)",P.basics.linkedin)+
           fld("pfScholar","Google Scholar URL (optional)",P.basics.scholar)+
           fld("pfOrcid","ORCID (optional)",P.basics.orcid,"https://orcid.org/…")+
@@ -212,7 +218,7 @@ var LD=(window.LD=window.LD||{});
       '<div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-7">'+
         secHead("Documents","URLs or file names of what you will <b>really attach</b>. The attachment checklist in Step 3 cross-checks the draft against this list.",'docs')+
         '<div class="grid sm:grid-cols-2 gap-4">'+
-          fld("pfDocCV","CV (link or filename)",P.docs.cv,"CV_SujanPaudyal.pdf")+
+          fld("pfDocCV","CV (link or filename)",P.docs.cv,"e.g. CV_YourName.pdf")+
           fld("pfDocTr","Transcript (link or filename)",P.docs.transcript)+
           fld("pfDocRS","Research statement (link or filename)",P.docs.researchStatement)+
           fld("pfDocPort","Portfolio URL",P.docs.portfolio||P.basics.website)+
