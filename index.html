@@ -40,6 +40,7 @@
     <nav class="hidden md:flex items-center gap-1 text-sm font-medium text-slate-600">
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="1" onclick="LD.goStep(1)">Find Professors</button>
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="2" onclick="LD.goStep(2)">Outreach Drafts</button>
+      <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="5" onclick="LD.goProfile()">My Academic Profile</button>
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="3" onclick="LD.openModal('stipendModal')">Stipend Insights</button>
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="4" onclick="LD.openModal('howModal')">How It Works</button>
       <button class="px-3 py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-bold shadow-sm" onclick="LD.openModal('publishModal')" title="Publish this portal online">🚀 Publish</button>
@@ -60,6 +61,7 @@
   <div id="mobileNav" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-2 space-y-1">
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goStep(1);LD.closeMobile()">1 · Find Professors</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goStep(2);LD.closeMobile()">2 · Outreach Drafts</button>
+    <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goProfile();LD.closeMobile()">👤 My Academic Profile</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openModal('stipendModal');LD.closeMobile()">Stipend Insights</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openModal('howModal');LD.closeMobile()">How It Works</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg bg-brand-600 text-white text-sm font-bold mt-1" onclick="LD.openModal('publishModal');LD.closeMobile()">🚀 Publish this portal</button>
@@ -136,9 +138,19 @@
             <span class="min-w-0"><span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Step 3</span><span class="block text-sm font-bold truncate">Generate &amp; Send Draft</span></span>
           </button>
         </li>
+        <li class="hidden sm:block w-8 h-px bg-slate-200 shrink-0"></li>
+        <li class="step-item flex-1" data-step="4">
+          <button onclick="LD.goProfile()" class="w-full flex items-center gap-3 group text-left">
+            <span class="step-dot w-9 h-9 shrink-0 rounded-full grid place-items-center font-display font-bold text-sm border-2 transition">👤</span>
+            <span class="min-w-0"><span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Personalize</span><span class="block text-sm font-bold truncate">My Academic Profile</span></span>
+          </button>
+        </li>
       </ol>
     </div>
   </div>
+
+  <!-- ===================== MY ACADEMIC PROFILE (editable + confirmable) ===================== -->
+  <div id="profilePage" class="hidden"></div>
 
   <!-- ===================== STEP 1 : SEARCH ===================== -->
   <section id="step-1" class="step-panel max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -269,7 +281,7 @@
     <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6 items-start">
       <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-7">
         <h2 class="font-display font-extrabold text-xl">Tell us about you</h2>
-        <p class="text-sm text-slate-500 mt-1">Used to personalize drafts and compute the transparent Research Fit Score. Every field is quoted into your email <b>verbatim</b> — only enter results, experience and institutions you can confirm. Stored only in your browser.</p>
+        <p class="text-sm text-slate-500 mt-1">Quick fields for this professor — pre-filled from <b>👤 My Academic Profile</b>. Used to personalize drafts and compute the transparent Research Fit Score. Every field is quoted into your email <b>verbatim</b> — only enter results, experience and institutions you can confirm. Stored only in your browser.</p>
 
         <div class="mt-5 grid sm:grid-cols-2 gap-4">
           <div class="sm:col-span-2">
@@ -309,6 +321,10 @@
             <div id="skillsBox" class="fld flex flex-wrap gap-1.5 items-center min-h-[48px] cursor-text" onclick="document.getElementById('skillInput').focus()">
               <input id="skillInput" class="flex-1 min-w-[140px] outline-none text-sm bg-transparent" placeholder="Python, PyTorch, LaTeX…" onkeydown="LD.skillKey(event)"/>
             </div>
+          </div>
+          <div class="sm:col-span-2 rounded-xl border border-brand-200 bg-brand-50/60 p-3">
+            <label class="block text-xs font-bold uppercase tracking-wide text-brand-700 mb-1.5">Interests relevant to this professor <span class="normal-case font-medium text-slate-400">(select only what genuinely applies — this subset drives the fit score &amp; draft)</span></label>
+            <div id="profInterestChips" class="flex flex-wrap gap-1.5"><span class="text-[11px] text-slate-400">Add interests in 👤 My Academic Profile first.</span></div>
           </div>
           <div>
             <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pGpa">GPA / grade (optional)</label>
@@ -616,8 +632,10 @@ surge ./letterdesk-publish.surge --domain your-name.surge.sh</pre>
 <script src="js/publish.js"></script>
 <script src="js/data.js"></script>
 <script src="js/geology.js"></script>
+<script src="js/profile.js"></script>
 <script src="js/search.js"></script>
 <script src="js/draft.js"></script>
+<script src="js/facts.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
