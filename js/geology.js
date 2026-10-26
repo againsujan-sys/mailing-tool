@@ -149,12 +149,16 @@ var LD=(window.LD=window.LD||{});
              pubsMatched:pubsMatched.map(function(x){return x.title;}), count:n, band:band, display:display };
   };
 
-  /* ---------- Demo geoscience supervisors ----------
-     Every availability/funding claim below is tied to a named SOURCE + DATE,
-     exactly like real records must be. The demo mixes all four states so the
-     distinction is visible offline. */
+  /* ---------- SIMULATED geoscience supervisors (offline UI exercise) ----------
+     ⚠ THESE PEOPLE DO NOT EXIST. Every profile carries simulated:true, sources
+     include "demo", every card shows a red SIMULATED banner, and js/app.js blocks
+     selecting them for drafts/pipeline/mailto. They exist only so the interface can
+     be explored offline; one entry also carries a REAL verified Crossref paper
+     (Bromhead 2023) as a template for what verified evidence looks like.
+     The fictional "Elena Kowalski / 10.48550/arXiv.2402.xxxxx" dataset that used to
+     ship in data.js was removed entirely — placeholder DOIs must never be reachable. */
   LD.GEO_DEMO = [
-    { id:"geo-1", name:"Prof. Ingrid Solheim", initials:"IS", title:"Professor of Glaciology", dept:"Earth Science", uni:"University of Bergen", country:"Norway",
+    { id:"geo-1", simulated:true, name:"Prof. Ingrid Solheim", initials:"IS", title:"Professor of Glaciology", dept:"Earth Science", uni:"University of Bergen", country:"Norway",
       email:"ingrid.solheim@uib.no", hIndex:31, citations:4210, papers:97, lastActive:2025, verified:null, sources:["demo","openalex"],
       areas:["glaciology","geohazards"],
       topics:["ice-sheet mass balance","Svalbard glaciers","glacial outburst floods","InSAR ice velocity"],
@@ -167,12 +171,16 @@ var LD=(window.LD=window.LD||{});
       fundingEvidence:[ { text:"Vacancy 12345: two fully funded Research Fellow posts (state salary code 1011).", url:"https://www.uib.no/en/positions/12345/phd-research-fellow-glaciology", date:"2026-09-12" } ],
       intake:"Spring 2027", degreeType:"MSc",
       recentPapers:[
-        { title:"Winter surface melt on Svalbard glaciers detected from Sentinel-1 backscatter", year:2025, venue:"The Cryosphere", doi:"10.5194/tc-19-1123-2025", cited:14, abstract:"Radar backscatter time series reveal recurrent winter melt events on seven Svalbard glaciers, revising mass-balance projections.", source:"Crossref (DOI resolution)" },
-        { title:"GLOF runout modelling for Grímsvötn outlet catchments under warming scenarios", year:2024, venue:"Journal of Glaciology", doi:"10.1017/jog.2024.31", cited:38, abstract:"2-D depth-integrated simulations quantify how rising geothermal melt shifts jökulhlaup peak discharge downstream.", source:"Crossref (publisher page)" },
-        { title:"Ice-penetrating radar constraints on subglacial water storage, Austfonna", year:2023, venue:"Annals of Glaciology", doi:"10.5194/aog-64-45-2023", cited:52, abstract:"Radio-echo profiles map distributed basal water pockets feeding seasonal speed-up events.", source:"Publisher landing page" }
-      ], groupSize:"11 members · 2 funded PhD posts advertised Sep 2026", openToStudents:true },
+        /* ↓ REAL, RESOLVED PUBLICATION — fetched live from Crossref on 2026-10-26 and compared field-by-field.
+           It is NOT by this simulated professor; it is attached here so the "Verified Against Source" badge
+           has a genuine example next to clearly-fictional ones. Never cite a paper you have not read. */
+        { title:"Landslide recognition, description, classification, and mapping", year:2023, venue:"Reflections on Slope Stability Engineering (CRC Press)", doi:"10.1201/9781003428169-1", authors:["Bromhead"], cited:0, abstract:"", source:"Crossref record (verified)",
+          verification:{ status:"verified", detail:"Title ✓ · Author ✓ · Year ✓ — resolved via api.crossref.org", resolver:"Crossref REST (api.crossref.org)", checkedAt:"2026-10-26T00:00:00Z", resolvedTitle:"Landslide recognition, description, classification, and mapping", resolvedYear:2023, resolvedAuthors:["Edward N. Bromhead"], landingUrl:"https://doi.org/10.1201/9781003428169-1", apiUrl:"https://api.crossref.org/works/10.1201/9781003428169-1", originalUrl:"https://doi.org/10.1201/9781003428169-1" } },
+        { title:"Winter surface melt on Svalbard glaciers detected from Sentinel-1 backscatter", year:2025, venue:"The Cryosphere", doi:"10.5194/tc-19-1123-2025", cited:14, abstract:"FICTIONAL paper attached to a FICTIONAL professor — exercise data only.", source:"SIMULATED — never send", simulated:true },
+        { title:"GLOF runout modelling for Grímsvötn outlet catchments under warming scenarios", year:2024, venue:"Journal of Glaciology", doi:"10.1017/jog.2024.31", cited:38, abstract:"FICTIONAL paper attached to a FICTIONAL professor — exercise data only.", source:"SIMULATED — never send", simulated:true }
+      ], groupSize:"11 members · 2 funded PhD posts advertised Sep 2026 (simulated)", openToStudents:true },
 
-    { id:"geo-2", name:"Dr. Marco Ferretti", initials:"MF", title:"Associate Professor of Hydrogeology", dept:"Civil & Environmental Engineering", uni:"Politecnico di Milano", country:"Italy",
+    { id:"geo-2", simulated:true, name:"Dr. Marco Ferretti", initials:"MF", title:"Associate Professor of Hydrogeology", dept:"Civil & Environmental Engineering", uni:"Politecnico di Milano", country:"Italy",
       email:"marco.ferretti@polimi.it", hIndex:24, citations:2380, papers:71, lastActive:2025, verified:null, sources:["demo","semantic"],
       areas:["hydrogeology","environmental-geoscience"],
       topics:["groundwater modelling","PFAS transport","Managed aquifer recharge","agricultural nitrate risk"],
@@ -190,7 +198,7 @@ var LD=(window.LD=window.LD||{});
         { title:"Nitrate threshold exceedance mapping for Lombardy private wells", year:2023, venue:"Science of the Total Environment", doi:"10.1016/j.scitotenv.2023.163445", cited:66, abstract:"Ten-year well registry plus logistic regression identifies irrigation intensity as dominant predictor.", source:"Elsevier (ScienceDirect)" }
       ], groupSize:"8 PhD students · hosts EU project data for MSc theses", openToStudents:true },
 
-    { id:"geo-3", name:"Prof. Ayodele Bankole", initials:"AB", title:"Professor of Applied Geophysics", dept:"Earth & Ocean Sciences", uni:"University of British Columbia", country:"Canada",
+    { id:"geo-3", simulated:true, name:"Prof. Ayodele Bankole", initials:"AB", title:"Professor of Applied Geophysics", dept:"Earth & Ocean Sciences", uni:"University of British Columbia", country:"Canada",
       email:"a.bankole@ubc.ca", hIndex:39, citations:7620, papers:154, lastActive:2025, verified:null, sources:["demo","openalex"],
       areas:["geophysics","engineering-geology"],
       topics:["near-surface geophysics","ERT site investigation","urban seismic refraction","geophysical well logging"],
@@ -207,7 +215,7 @@ var LD=(window.LD=window.LD||{});
         { title:"Borehole radar attenuation as a clay-content proxy in deltaic sediments", year:2023, venue:"Near Surface Geophysics", doi:"10.1002/nsg.12266", cited:35, abstract:"Calibration against core logs supports rapid lithological interpolation in Fraser Delta sites.", source:"Wiley publisher page (DOI)" }
       ], groupSize:"10 members · NSERC discovery grant active until 2028", openToStudents:true },
 
-    { id:"geo-4", name:"Dr. Sofia Ramírez", initials:"SR", title:"Lecturer in Seismology & Natural Hazards", dept:"Geological Sciences", uni:"ETH Zürich", country:"Switzerland",
+    { id:"geo-4", simulated:true, name:"Dr. Sofia Ramírez", initials:"SR", title:"Lecturer in Seismology & Natural Hazards", dept:"Geological Sciences", uni:"ETH Zürich", country:"Switzerland",
       email:"sofia.ramirez@earth.northwestern-demo.invalid", hIndex:18, citations:1290, papers:44, lastActive:2025, verified:null, sources:["demo","semantic"],
       areas:["seismology","geohazards","tectonics"],
       topics:["induced seismicity","earthquake early warning","fault kinematics","Alpine landslide risk"],
@@ -224,7 +232,7 @@ var LD=(window.LD=window.LD||{});
         { title:"Slow-slip modulation of landslide tremor in the Albula valley", year:2024, venue:"Solid Earth", doi:"10.5194/se-15-221-2024", cited:17, abstract:"Three borehole arrays link tremor swarms to deep creep pulses coinciding with wet-season pore-pressure rise.", source:"Copernicus (publisher page)" }
       ], groupSize:"6 members · study leave 2026/27", openToStudents:false },
 
-    { id:"geo-5", name:"Prof. Tansu Yılmaz", initials:"TY", title:"Professor of Engineering Geology", dept:"Geological Engineering", uni:"Istanbul Technical University", country:"Turkey",
+    { id:"geo-5", simulated:true, name:"Prof. Tansu Yılmaz", initials:"TY", title:"Professor of Engineering Geology", dept:"Geological Engineering", uni:"Istanbul Technical University", country:"Turkey",
       email:"yilmaz@itu.edu.tr", hIndex:27, citations:3410, papers:118, lastActive:2024, verified:null, sources:["demo","crossref"],
       areas:["engineering-geology","geohazards"],
       topics:["rockfall hazard","urban tunneling","seismic microzonation","weathering of building stone"],
@@ -240,7 +248,7 @@ var LD=(window.LD=window.LD||{});
         { title:"Site-response proxies from HVSR for historic peninsula microzonation", year:2023, venue:"Bulletin of Earthquake Engineering", doi:"10.1007/s10518-023-01744-2", cited:44, abstract:"Horizontal-to-vertical spectral ratios correlate with buried paleo-valley geometry mapped by drilling.", source:"Springer publisher page (DOI)" }
       ], groupSize:"14 members", openToStudents:true },
 
-    { id:"geo-6", name:"Dr. Fatima Al-Zahra", initials:"FA", title:"Assistant Professor of Environmental Geoscience", dept:"Earth Systems Science", uni:"University College Dublin", country:"Ireland",
+    { id:"geo-6", simulated:true, name:"Dr. Fatima Al-Zahra", initials:"FA", title:"Assistant Professor of Environmental Geoscience", dept:"Earth Systems Science", uni:"University College Dublin", country:"Ireland",
       email:"f.alzahra@ucd.ie", hIndex:15, citations:940, papers:33, lastActive:2025, verified:null, sources:["demo","openalex"],
       areas:["environmental-geoscience","hydrogeology"],
       topics:["acid mine drainage","constructed wetlands","peatland carbon storage","tailings containment"],
