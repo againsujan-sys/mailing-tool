@@ -96,7 +96,7 @@ var LD=(window.LD=window.LD||{});
         '<span class="font-display font-extrabold text-brand-600 w-6 shrink-0 text-right">#'+(i+1)+'</span>'+
         '<div class="min-w-0 flex-1">'+
           '<p class="font-bold truncate">'+LD.escapeHtml(p.name)+' <span class="text-[11px] font-normal text-slate-500">· '+LD.escapeHtml(p.uni||p.affiliation||"—")+'</span></p>'+
-          '<div class="mt-1.5">'+LD.renderStatusPills(LD.evaluateAll(p,x.profileUsed),true)+'</div>'+
+          '<div class="mt-1.5">'+LD.renderStatusPills(LD.evaluateAll(p,res.profileUsed),true)+'</div>'+
           '<p class="text-[11px] text-slate-500 mt-1.5"><b>Stage-2 factors:</b> '+
             (x.rank.factors.length? x.rank.factors.map(function(f){ return '<span class="badge '+(f.pts>0?"b-green":"b-red")+' !text-[10px]">'+(f.pts>0?"+":"")+f.pts+" "+LD.escapeHtml(f.label)+'</span>'; }).join(" ")
               : '<span class="text-slate-400">none — no positive evidence recorded yet</span>')+

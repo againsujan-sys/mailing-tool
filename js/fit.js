@@ -136,7 +136,7 @@ var LD=(window.LD=window.LD||{});
     var im = LD.IDENTITY_STATUS[ident.status];
     return { key:"contact", title:"Contact Requirements", band:band, label:label, cls:cls,
              note:req.note+extra, email:LD.primaryEmail(prof),
-             identity:{ status:ident.status, label:im.label, cls:im.cls, note:im.note },
+             identity:{ status:ident.status, label:im.label, cls:im.cls, note:im.note, icon:im.icon },
              policy: pol||null };
   };
 

@@ -85,7 +85,7 @@
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <button onclick="LD.goStep(1)" class="px-5 py-3 rounded-xl bg-white text-brand-800 font-bold shadow-card hover:bg-brand-50 transition">Start Free Search →</button>
-          <button onclick="LD.loadDemo()" class="px-5 py-3 rounded-xl bg-brand-600/40 border border-white/25 font-semibold hover:bg-brand-600/60 transition">▶ Load Demo Data</button>
+          <button onclick="LD.loadDemo()" class="px-5 py-3 rounded-xl bg-brand-600/40 border border-white/25 font-semibold hover:bg-brand-600/60 transition">▶ Load Example Data</button>
         </div>
         <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-200">
           <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> No sign-up required</span>
@@ -95,20 +95,25 @@
       </div>
       <div class="hidden lg:block">
         <div class="bg-white/10 backdrop-blur rounded-2xl border border-white/15 p-5 shadow-2xl">
-          <div class="flex items-center justify-between text-xs font-semibold text-brand-200 mb-3"><span>PROFESSOR MATCH</span><span class="bg-emerald-400/20 text-emerald-300 px-2 py-0.5 rounded-full">Research fit · 6 overlaps</span></div>
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-fuchsia-500 grid place-items-center font-display font-bold text-lg">EK</div>
-            <div><p class="font-bold">Dr. Elena Kowalski</p><p class="text-xs text-brand-200">Assoc. Prof · Computer Science · TU Munich</p></div>
+          <div class="flex items-center justify-between text-xs font-semibold text-brand-200 mb-3">
+            <span>WORKFLOW PREVIEW</span>
+            <span class="bg-amber-400/20 text-amber-200 px-2 py-0.5 rounded-full">illustration only</span>
           </div>
-          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
-            <div class="bg-white/10 rounded-lg py-2"><p class="font-display font-bold text-lg">34</p><p class="text-[10px] uppercase tracking-wide text-brand-200">h-index</p></div>
-            <div class="bg-white/10 rounded-lg py-2"><p class="font-display font-bold text-lg">128</p><p class="text-[10px] uppercase tracking-wide text-brand-200">Papers</p></div>
-            <div class="bg-white/10 rounded-lg py-2"><p class="text-[#7dd3fc] font-display font-bold text-lg">€2.1k</p><p class="text-[10px] uppercase tracking-wide text-brand-200">TV-L E13/mo</p></div>
+          <div class="space-y-2.5 text-[13px] leading-relaxed">
+            <div class="rounded-xl bg-white/10 border border-white/10 p-3">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-brand-300 mb-1">1 · Search</p>
+              <p class="text-brand-100">Live publications, h-index, DOI — merged from OpenAlex, Semantic Scholar and Crossref.</p>
+            </div>
+            <div class="rounded-xl bg-white/10 border border-white/10 p-3">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-brand-300 mb-1">2 · Verify</p>
+              <p class="text-brand-100">Four honest email levels: syntax → official listing → domain MX → mailbox. Never guessed.</p>
+            </div>
+            <div class="rounded-xl bg-white/10 border border-white/10 p-3">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-brand-300 mb-1">3 · Draft</p>
+              <p class="text-brand-100">120–180 words, every claim sourced to a DOI or your own confirmed profile — no invented funding.</p>
+            </div>
           </div>
-          <div class="mt-3 bg-white/90 text-ink rounded-xl p-3 text-[13px] leading-relaxed shadow">
-            <span class="text-[10px] font-bold uppercase tracking-widest text-brand-600">Draft preview · 96 words</span><br/>
-            Dear Prof. Kowalski — your NeurIPS 2024 work on sparse attention (DOI:10.48550/arXiv.2402.xxxxx) matches my thesis on efficient transformers…
-          </div>
+          <p class="mt-3 text-[11px] text-brand-200/80">Run a real search, or press <b class="text-white">Load Example Data</b> to explore the workflow with example-sandbox records.</p>
         </div>
       </div>
     </div>
@@ -128,7 +133,7 @@
         <li class="step-item flex-1" data-step="2">
           <button onclick="LD.goStep(2)" class="w-full flex items-center gap-3 group text-left">
             <span class="step-dot w-9 h-9 shrink-0 rounded-full grid place-items-center font-display font-bold text-sm border-2 transition">2</span>
-            <span class="min-w-0"><span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Step 2</span><span class="block text-sm font-bold truncate">Your Profile &amp; Fit Score</span></span>
+            <span class="min-w-0"><span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Step 2</span><span class="block text-sm font-bold truncate">Your Profile &amp; Research Alignment</span></span>
           </button>
         </li>
         <li class="hidden sm:block w-8 h-px bg-slate-200 shrink-0"></li>
@@ -246,7 +251,7 @@
       <div id="searchEmpty" class="mt-8 hidden text-center py-10">
         <p class="text-4xl mb-2">🔎</p>
         <p class="font-bold text-slate-700">No results yet</p>
-        <p class="text-sm text-slate-500">Enter a topic above, or press <em>Load Demo Data</em> to explore instantly.</p>
+        <p class="text-sm text-slate-500">Enter a topic above, or press <em>Load Example Data</em> to explore instantly.</p>
       </div>
       <div id="searchError" class="mt-5 hidden rounded-xl border border-rose-200 bg-rose-50 text-rose-800 p-4 text-sm"></div>
 
@@ -257,7 +262,7 @@
           <div class="flex items-center gap-2 text-sm">
             <label class="font-semibold text-slate-500">Sort:</label>
             <select id="sortBy" onchange="LD.renderResults()" class="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold">
-              <option value="fit">Best fit score</option><option value="hindex">Highest h-index</option><option value="recent">Most recent papers</option><option value="cited">Most cited</option>
+              <option value="rank">Highest rank points</option><option value="hindex">Highest h-index</option><option value="recent">Most recent papers</option><option value="cited">Most cited</option>
             </select>
             <label class="ml-2 inline-flex items-center gap-1.5 font-semibold text-slate-500 cursor-pointer"><input id="onlyVerified" type="checkbox" class="rounded border-slate-300" onchange="LD.renderResults()"/> Verified emails only</label>
             <label class="ml-2 inline-flex items-center gap-1.5 font-semibold text-slate-500 cursor-pointer"><input id="hideClosed" type="checkbox" class="rounded border-slate-300" onchange="LD.renderResults()"/> Hide “not accepting”</label>
@@ -265,6 +270,20 @@
         </div>
         <p class="mb-4 mt-1 text-[11px] leading-snug text-slate-400">Publication metrics &amp; DOIs from OpenAlex / Semantic Scholar / Crossref. Supervisor availability and funding are separately sourced fields — publications never prove an open position.</p>
         <div id="profCards" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+      </div>
+
+      <!-- Fundability ranking (rendered by fundability.js → LD.renderFundability into #rankBody) -->
+      <div id="rankPanel" class="hidden mt-6 rounded-2xl border border-slate-200 bg-white shadow-card">
+        <details class="p-4 sm:p-5">
+          <summary class="cursor-pointer list-none flex items-center justify-between gap-2">
+            <div>
+              <h3 class="font-display font-bold text-lg">🎯 Fundability ranking</h3>
+              <p class="text-sm text-slate-500 mt-0.5">Two-stage engine: hard filters first, then transparent rank points. Not a probability of admission.</p>
+            </div>
+            <span class="text-slate-400 text-xs">▾</span>
+          </summary>
+          <div id="rankBody" class="mt-4 space-y-3"></div>
+        </details>
       </div>
 
       <div class="mt-6 flex justify-end">
@@ -281,7 +300,7 @@
     <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6 items-start">
       <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-7">
         <h2 class="font-display font-extrabold text-xl">Tell us about you</h2>
-        <p class="text-sm text-slate-500 mt-1">Quick fields for this professor — pre-filled from <b>👤 My Academic Profile</b>. Used to personalize drafts and compute the transparent Research Fit Score. Every field is quoted into your email <b>verbatim</b> — only enter results, experience and institutions you can confirm. Stored only in your browser.</p>
+        <p class="text-sm text-slate-500 mt-1">Quick fields for this professor — pre-filled from <b>👤 My Academic Profile</b>. Used to personalize drafts and compute the transparent Research Alignment Score. Every field is quoted into your email <b>verbatim</b> — only enter results, experience and institutions you can confirm. Stored only in your browser.</p>
 
         <div class="mt-5 grid sm:grid-cols-2 gap-4">
           <div class="sm:col-span-2">
@@ -305,7 +324,7 @@
             <input id="pField" class="fld" placeholder="e.g. Computer Science" />
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pTopic">Your thesis / research interest * <span class="normal-case font-medium text-slate-400">(drives the fit score)</span></label>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pTopic">Your thesis / research interest * <span class="normal-case font-medium text-slate-400">(drives the alignment score)</span></label>
             <textarea id="pTopic" rows="2" class="fld resize-none" placeholder="e.g. Efficient attention mechanisms for low-resource transformer inference on edge devices"></textarea>
           </div>
           <div>
@@ -323,7 +342,7 @@
             </div>
           </div>
           <div class="sm:col-span-2 rounded-xl border border-brand-200 bg-brand-50/60 p-3">
-            <label class="block text-xs font-bold uppercase tracking-wide text-brand-700 mb-1.5">Interests relevant to this professor <span class="normal-case font-medium text-slate-400">(select only what genuinely applies — this subset drives the fit score &amp; draft)</span></label>
+            <label class="block text-xs font-bold uppercase tracking-wide text-brand-700 mb-1.5">Interests relevant to this professor <span class="normal-case font-medium text-slate-400">(select only what genuinely applies — this subset drives the alignment score &amp; draft)</span></label>
             <div id="profInterestChips" class="flex flex-wrap gap-1.5"><span class="text-[11px] text-slate-400">Add interests in 👤 My Academic Profile first.</span></div>
           </div>
           <div>
@@ -349,11 +368,11 @@
         </div>
       </div>
 
-      <!-- Research Fit panel (replaces the old "acceptance feasibility" heuristic) -->
+      <!-- Research Alignment panel (replaces the old "acceptance feasibility" heuristic) -->
       <div class="space-y-6">
         <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
           <div class="flex items-center justify-between">
-            <h3 class="font-display font-bold">Research Fit Score</h3>
+            <h3 class="font-display font-bold">Research Alignment</h3>
             <span id="feasBadge" class="text-xs font-bold rounded-full px-2.5 py-1">—</span>
           </div>
           <div class="mt-4 flex items-center gap-5">
@@ -370,6 +389,15 @@
         <div id="availPanel" class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
           <h3 class="font-display font-bold mb-3">Supervisor availability &amp; funding evidence</h3>
           <div id="availBody"><p class="text-sm text-slate-400">Select a professor to inspect their recorded availability source.</p></div>
+        </div>
+
+        <!-- Four independent status indicators (rendered by fit.js → LD.renderStatusDetail into #statusDetail) -->
+        <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-display font-bold">Four independent statuses</h3>
+            <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">no percentages · no probabilities</span>
+          </div>
+          <div id="statusDetail" class="space-y-2"><p class="text-sm text-slate-400">Select a professor to see alignment, funding, eligibility and contact — each derived only from recorded evidence.</p></div>
         </div>
 
         <!-- Publication verification panel -->
@@ -493,12 +521,22 @@
       </div>
     </div>
 
+    <!-- Pipeline analytics (rendered by crm.js → LD.renderAnalytics into #analyticsBody) -->
+    <div class="mt-6 bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
+      <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+        <h3 class="font-display font-bold text-lg">📊 Pipeline analytics</h3>
+        <p class="text-[11px] text-slate-400">Counts from your own OutreachRecords only — no fabricated metrics.</p>
+      </div>
+      <div id="analyticsBody" class="text-sm"><p class="text-slate-400">Save a draft to the pipeline to see analytics.</p></div>
+    </div>
+
+    <!-- Outreach pipeline (rendered by crm.js → LD.renderPipeline into #pipelineTable) -->
     <div class="mt-6 bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
       <div class="flex items-center justify-between flex-wrap gap-2">
         <h3 class="font-display font-bold text-lg">📌 Outreach pipeline</h3>
-        <button onclick="LD.clearPipeline()" class="text-xs font-bold text-rose-600 hover:underline">Clear all</button>
+        <button onclick="if(confirm('Delete ALL outreach records?')){ LD.db.outreach.length=0; LD.saveDb(); LD.renderPipeline && LD.renderPipeline(); LD.renderAnalytics && LD.renderAnalytics(); }" class="text-xs font-bold text-rose-600 hover:underline">Clear all</button>
       </div>
-      <div id="pipeline" class="mt-4 grid md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm"><p class="text-slate-400 col-span-full">Saved drafts appear here. Progress: Not sent → Sent → Replied → Interview → Offer 🎉</p></div>
+      <div id="pipelineTable" class="mt-4 text-sm"><p class="text-slate-400">Saved drafts appear here. Progress: Not sent → Sent → Replied → Interview → Offer 🎉</p></div>
     </div>
   </section>
 </main>
@@ -629,13 +667,19 @@ surge ./letterdesk-publish.surge --domain your-name.surge.sh</pre>
 
 <div id="toastWrap" class="fixed bottom-4 right-4 z-[60] space-y-2 pointer-events-none"></div>
 
-<script src="js/publish.js"></script>
+<!-- Required script order (all files exist in js/): verify → schema → data → geology → fit → fundability → crm → profile → search → draft → facts → app → publish -->
+<script src="js/verify.js"></script>
+<script src="js/schema.js"></script>
 <script src="js/data.js"></script>
 <script src="js/geology.js"></script>
+<script src="js/fit.js"></script>
+<script src="js/fundability.js"></script>
+<script src="js/crm.js"></script>
 <script src="js/profile.js"></script>
 <script src="js/search.js"></script>
 <script src="js/draft.js"></script>
 <script src="js/facts.js"></script>
 <script src="js/app.js"></script>
+<script src="js/publish.js"></script>
 </body>
 </html>
