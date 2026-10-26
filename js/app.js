@@ -42,6 +42,19 @@
     w.appendChild(d); setTimeout(function(){ d.style.opacity="0"; d.style.transition="opacity .3s"; setTimeout(function(){d.remove();},320); }, 3400);
   };
 
+  /* ---------- example-data guard (draft generation / mailto / CRM pipeline) ----------
+     Example-sandbox profiles (LD.GEO_EXAMPLE, flagged example:true) exist only so the UI
+     can be exercised offline. They must NEVER flow into live outreach or CRM tracking. */
+  function guardExampleProfile(actionLabel){
+    var currentProfile = getSelected();
+    if (currentProfile && currentProfile.example) {
+        alert("Cannot perform live outreach or CRM tracking on example/demonstration data.");
+        return true;
+    }
+    return false;
+  }
+  LD.guardExampleProfile = guardExampleProfile;
+
   /* ---------- modal ---------- */
   LD.openModal = function(id){ var m=$(id); if(m){ m.classList.remove("hidden"); m.classList.add("show"); document.body.style.overflow="hidden"; } };
   LD.closeModal = function(id){ var m=$(id); if(m){ m.classList.add("hidden"); m.classList.remove("show"); document.body.style.overflow=""; } };
@@ -104,14 +117,22 @@
 
   /* ---------- search flow ---------- */
   LD.quick = function(q,c){ $("q").value=q; if(c)$("country").value=c; LD.search(); };
-  LD.loadDemo = function(){
-    state.results = JSON.parse(JSON.stringify(LD.DEMO_PROFESSORS));
-    var q=$("q").value.trim()||"transformers";
-    state.results.forEach(function(p){ p.fit = LD.computeFit(p,q); });
-    state.results.sort(function(a,b){return b.fit-a.fit;});
+  /* Offline UI sandbox: the fictional LD.DEMO_PROFESSORS table was DELETED (invented
+     people, universities and DOIs must never be able to flow into a real email).
+     The example-sandbox geoscience profiles in js/geology.js replace it. They are
+     merged into the current result set via LD.mergeGeoExample() and every entry is
+     flagged example:true, so drafts/mailto/CRM actions stay blocked for them. */
+  LD.loadGeoDemo = function(){
+    state.results = LD.mergeGeoExample(state.results);
+    var profile = ($("pName") && $("pName").value.trim()) ? { topic:$("pTopic")?$("pTopic").value.trim():"", field:"", skills:state.skills } : null;
+    state.results.forEach(function(p){
+      var r = LD.computeResearchFit(p, profile || { topic: ($("q").value.trim()||"geology"), skills:state.skills });
+      p.fit = r.display; p.researchFit = r;
+    });
+    state.results.sort(function(a,b){ return (b.fit||0)-(a.fit||0); });
     $("searchStatus").classList.add("hidden");
     showResults(true);
-    LD.toast("Demo dataset loaded — fully interactive offline.","info");
+    LD.toast("Example sandbox loaded — browsing only. Drafts, mailto and CRM tracking are blocked for example data.","info");
   };
   LD.search = function(){
     var q=$("q").value.trim(), country=$("country").value, engines=$("engines").value;
@@ -144,9 +165,9 @@
           $("searchStatus").classList.add("hidden");
           var box=$("searchError"); box.classList.remove("hidden");
           if(String(err.message)==="no_results"){
-            box.innerHTML="<b>No usable profiles found.</b> Try broader terms (e.g. “machine learning” instead of a niche phrase), or press <button class='underline font-bold' onclick='LD.loadDemo()'>Load Demo Data</button> to explore the studio.";
+            box.innerHTML="<b>No usable profiles found.</b> Try broader terms (e.g. “groundwater modelling” instead of a niche phrase), or press <button class='underline font-bold' onclick='LD.loadGeoDemo()'>Load Example Sandbox</button> to explore the studio offline.";
           } else {
-            box.innerHTML="<b>Live search unavailable:</b> "+escapeHtml(err.message)+".<br/>This can happen when APIs rate-limit or you are offline. <button class='underline font-bold' onclick='LD.loadDemo()'>Load Demo Data →</button>";
+            box.innerHTML="<b>Live search unavailable:</b> "+escapeHtml(err.message)+".<br/>This can happen when APIs rate-limit or you are offline. <button class='underline font-bold' onclick='LD.loadGeoDemo()'>Load Example Sandbox →</button>";
           }
           return;
         }
@@ -183,21 +204,36 @@
     if(!list.length){ wrap.innerHTML='<div class="col-span-full text-center py-8 text-slate-400">No matches for this filter.</div>'; return; }
     wrap.innerHTML=list.map(cardHTML).join("");
   };
-  function isLive(l){ return l.some(function(p){return (p.sources||[]).indexOf("demo")===-1;}); }
+  function isLive(l){ return l.some(function(p){return (p.sources||[]).indexOf("demo")===-1 && !p.example;}); }
 
   function fitColor(f){ return f>=80?"#10b981":f>=65?"#3b6cf6":f>=50?"#f59e0b":"#ef4444"; }
-  function srcBadge(s){ return {openalex:'<span class="badge b-blue">OpenAlex</span>',semantic:'<span class="badge b-amber">S2</span>',crossref:'<span class="badge b-green">Crossref</span>',demo:'<span class="badge b-slate">demo</span>'}[s]||""; }
+  function srcBadge(s){ return {openalex:'<span class="badge b-blue">OpenAlex</span>',semantic:'<span class="badge b-amber">S2</span>',crossref:'<span class="badge b-green">Crossref</span>',example:'<span class="badge b-red">EXAMPLE</span>'}[s]||""; }
+
+  /* ---------- funding strip on cards: structured funding records ONLY.
+     The legacy LD.STIPENDS table and the old stip.ra / stip.ta property lookups were
+     DELETED (unsourced averages). Cards now show evidence-backed records from
+     js/fundability.js (LD.db.funding, each with an official source URL) or the plain
+     country guidance text from fundability's schema in data.js — never invented amounts. */
+  function fundingStrip(p){
+    var recs = (LD.db && LD.db.funding ? LD.db.funding : []).filter(function(f){ return f.linkedProfessorId===p.id && f.source && f.source.url; });
+    if(recs.length){
+      return ' · 💶 '+recs.length+' sourced funding record'+(recs.length>1?'s':'')+' ('+escapeHtml(String((recs[0].source&&recs[0].source.checkedAt)||"").slice(0,10))+')';
+    }
+    var g = LD.stipendFor(p.country);
+    return g ? ' · 💶 '+escapeHtml(g.country)+': '+escapeHtml(g.guidance) : '';
+  }
 
   function cardHTML(p){
-    var stip=LD.stipendFor(p.country);
     var papers=(p.recentPapers||[]).slice(0,3).map(function(x){
       return '<li class="flex gap-1.5 items-start"><span class="mt-1 w-1 h-1 rounded-full bg-brand-400 shrink-0"></span><span class="leading-snug"><b class="font-semibold">'+escapeHtml(x.title||"")+'</b> <span class="text-slate-400">· '+escapeHtml(x.venue||"")+' '+(x.year||"")+'</span>'+(x.doi?' <a class="text-brand-600 underline decoration-dotted" target="_blank" rel="noopener" href="https://doi.org/'+encodeURIComponent(x.doi)+'">DOI:'+escapeHtml(x.doi)+'</a>':"")+'</span></li>';
     }).join("");
     var topics=(p.topics||[]).slice(0,4).map(function(t){return '<span class="badge b-slate">'+escapeHtml(t)+'</span>';}).join(" ");
     var sel = p.id===state.selectedId;
+    var ev = null; try { ev = LD.evaluateAll(p, LD.profileForDraft ? LD.profileForDraft(p.id) : {}); } catch(e){}
     return ''+
-    '<article class="pcard p-5 flex flex-col gap-3'+(sel?" selected":"")+'" data-id="'+p.id+'">'+
+    '<article class="pcard p-5 flex flex-col gap-3'+(sel?" selected":"")+(p.example?' opacity-90 ring-1 ring-rose-200':"")+'" data-id="'+p.id+'">'+
       '<span class="sel-flag">SELECTED ✓</span>'+
+      (p.example?'<div class="rounded-lg bg-rose-50 border border-rose-200 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-rose-700">⚠ Example sandbox — not an outreach target</div>':'')+
       '<div class="flex items-start gap-3">'+
         '<div class="avatar-grad w-12 h-12 rounded-full grid place-items-center font-display font-bold text-white shrink-0">'+escapeHtml(p.initials||"??")+'</div>'+
         '<div class="min-w-0 flex-1">'+
@@ -205,16 +241,17 @@
           '<p class="text-xs text-slate-500 leading-snug">'+escapeHtml([p.title,p.dept].filter(Boolean).join(" · ")||"Faculty")+'</p>'+
           '<p class="text-xs text-slate-500 truncate">'+(LD.COUNTRY_FLAGS[p.country]||"🌐")+' '+escapeHtml(p.uni||"")+'</p>'+
         '</div>'+
-        '<div class="text-right shrink-0" title="Acceptance feasibility (reply likelihood heuristic)">'+
+        '<div class="text-right shrink-0" title="Research-fit display length from LD.computeResearchFit — listed topical overlaps only. NOT a reply or admission likelihood.">'+
           '<svg viewBox="0 0 40 40" class="w-11 h-11 -rotate-90"><circle cx="20" cy="20" r="16" stroke="#e2e8f0" stroke-width="4" fill="none"/><circle cx="20" cy="20" r="16" stroke="'+fitColor(p.fit||0)+'" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="'+(100.5-(100.5*(p.fit||0)/100))+'"/></svg>'+
-          '<p class="text-[10px] font-extrabold -mt-8">'+(p.fit||0)+'%</p><p class="text-[8px] font-bold text-slate-400 mt-4">FIT</p>'+
+          '<p class="text-[10px] font-extrabold -mt-8">'+(p.researchFit?p.researchFit.count:(p.fit||0)+(p.fit?"%":""))+'</p><p class="text-[8px] font-bold text-slate-400 mt-4">OVERLAPS</p>'+
         '</div>'+
       '</div>'+
       '<div class="grid grid-cols-3 gap-2 text-center">'+
         statCell(p.hIndex,"h-index")+statCell(fmtN(p.citations),"citations")+statCell(fmtN(p.papers),"papers")+
       '</div>'+
+      (ev?LD.renderStatusPills(ev,true):'')+
       '<div class="flex flex-wrap gap-1">'+topics+'</div>'+
-      '<div class="text-[11px] text-slate-400 flex flex-wrap gap-1 items-center">sources: '+(p.sources||[]).map(srcBadge).join("")+' · active '+(p.lastActive||"—")+(stip?' · RA ≈ '+escapeHtml(stip.ra):"")+'</div>'+
+      '<div class="text-[11px] text-slate-400 flex flex-wrap gap-1 items-center">sources: '+(p.sources||[]).map(srcBadge).join("")+' · active '+(p.lastActive||"—")+fundingStrip(p)+'</div>'+
       (papers?'<details class="paper-fold"><summary class="text-xs font-bold text-brand-700 select-none">▾ Recent publications (real DOIs)</summary><ul class="mt-2 space-y-1.5 text-[12px] text-slate-600 list-none pl-0">'+papers+'</ul></details>':'')+
       '<div class="mt-auto pt-1 flex items-center justify-between gap-2 border-t border-slate-100">'+
         '<span class="email-badge text-[11px] font-bold text-slate-400" data-email-state="'+(p.email?"none":"noemail")+'">'+(p.email? "✉ "+shortEmail(p.email) : "✉ no public email")+'</span>'+
@@ -254,9 +291,10 @@
     var box=$("selProfMini"); var p=getSelected();
     if(!box) return;
     if(!p){ box.innerHTML='<p class="text-[11px] font-bold uppercase tracking-widest text-brand-600 mb-2">Selected professor</p><p class="text-sm text-slate-500">None yet — go back to Step 1 and pick a profile card.</p>'; return; }
-    var stip=LD.stipendFor(p.country);
+    var ev=null; try{ ev = LD.evaluateAll(p, LD.profileForDraft ? LD.profileForDraft(p.id) : {}); }catch(e){}
     box.innerHTML='' +
       '<p class="text-[11px] font-bold uppercase tracking-widest text-brand-600 mb-2">Selected professor</p>' +
+      (p.example?'<div class="mb-3 rounded-lg bg-rose-50 border border-rose-200 px-3 py-2 text-[11px] font-bold text-rose-700">⚠ EXAMPLE-SANDBOX record — drafts, mailto and CRM tracking are blocked for this profile.</div>':'') +
       '<div class="flex items-center gap-3">' +
         '<div class="avatar-grad w-11 h-11 rounded-full grid place-items-center font-display font-bold text-white shrink-0">'+escapeHtml(p.initials||"??")+'</div>' +
         '<div class="min-w-0"><p class="font-bold leading-tight truncate">'+escapeHtml(p.name)+'</p><p class="text-xs text-slate-500 truncate">'+escapeHtml((p.dept||"")+(p.uni?" · "+p.uni:""))+'</p></div>' +
@@ -264,10 +302,13 @@
       '<div class="mt-3 grid grid-cols-3 gap-2 text-center text-sm">' +
         '<div class="bg-white rounded-lg py-1.5 border border-brand-100"><b class="font-display">'+(p.hIndex||"—")+'</b><p class="text-[10px] text-slate-400 font-bold uppercase">h-index</p></div>' +
         '<div class="bg-white rounded-lg py-1.5 border border-brand-100"><b class="font-display">'+fmtN(p.citations)+'</b><p class="text-[10px] text-slate-400 font-bold uppercase">citations</p></div>' +
-        '<div class="bg-white rounded-lg py-1.5 border border-brand-100"><b class="font-display">'+(p.fit||"—")+'%</b><p class="text-[10px] text-slate-400 font-bold uppercase">reply fit</p></div>' +
+        '<div class="bg-white rounded-lg py-1.5 border border-brand-100"><b class="font-display">'+(ev&&ev.alignment?ev.alignment.count:(p.researchFit?p.researchFit.count:"—"))+'</b><p class="text-[10px] text-slate-400 font-bold uppercase">listed overlaps</p></div>' +
       '</div>' +
-      (stip?'<p class="mt-3 text-xs text-slate-600 bg-white/70 rounded-lg p-2.5 border border-brand-100">💶 <b>'+escapeHtml(p.country)+'</b>: RA ≈ '+escapeHtml(stip.ra)+'/mo · TA ≈ '+escapeHtml(stip.ta)+' · '+escapeHtml(stip.tuition)+'</p>':"") +
+      (ev?'<div class="mt-3">'+LD.renderStatusPills(ev,true)+'</div>':'') +
+      /* structured funding evidence only — the legacy stip.ra / stip.ta table lookups were deleted */
+      (ev&&ev.funding?'<p class="mt-3 text-xs text-slate-600 bg-white/70 rounded-lg p-2.5 border border-brand-100">💶 <b>'+escapeHtml(p.country||"Funding")+'</b>: '+escapeHtml(ev.funding.label)+' — '+escapeHtml(ev.funding.note)+(ev.funding.evidence&&ev.funding.evidence.length?' <a class="underline decoration-dotted text-brand-700" target="_blank" rel="noopener" href="'+escapeHtml(ev.funding.evidence[0].url)+'">source</a>':"")+'</p>':"")+
       (p.email?'<p class="mt-2 text-xs text-slate-500">✉ '+escapeHtml(p.email)+' <span class="badge '+vb(p.verified)+'">'+vlabel(p.verified)+'</span></p>':'<p class="mt-2 text-xs text-amber-700 bg-amber-50 rounded-lg p-2 border border-amber-200">⚠ No public email from APIs — find it on their lab page, then paste it below to enable sending.</p><input id="manualEmail" class="fld mt-2" placeholder="Paste professor email to enable sending" oninput="LD.setManualEmail(this.value)" />') +
+      (ev?'<details class="mt-3"><summary class="text-xs font-bold text-brand-700 cursor-pointer select-none">▾ Full status detail (alignment · funding · eligibility · contact)</summary><div class="mt-2 space-y-2">'+LD.renderStatusDetail(ev)+'</div></details>':'') +
       '<button onclick="LD.goStep(1)" class="mt-3 text-xs font-bold text-brand-700 hover:underline">← change professor</button>';
   }
   function vb(v){ return v==="valid"?"b-green":v==="likely"?"b-blue":v==="invalid"?"b-red":"b-slate"; }
