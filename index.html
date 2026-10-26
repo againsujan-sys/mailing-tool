@@ -79,7 +79,7 @@
         </h1>
         <p class="mt-4 text-brand-100/90 max-w-xl leading-relaxed">
           Built for international graduate students. Search real professor research with h-indexes and paper DOIs,
-          verify emails live, and generate high-converting drafts <strong class="text-white">strictly under 150 words</strong> — no AI clichés.
+          verify emails live, and generate <strong class="text-white">fact-checked drafts (~120–180 words)</strong> — every claim sourced, no AI clichés.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <button onclick="LD.goStep(1)" class="px-5 py-3 rounded-xl bg-white text-brand-800 font-bold shadow-card hover:bg-brand-50 transition">Start Free Search →</button>
@@ -88,12 +88,12 @@
         <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-200">
           <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> No sign-up required</span>
           <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> Free Groq / Llama 3 mode</span>
-          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> 150-word hard limit</span>
+          <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg> Configurable word limit (default 180)</span>
         </div>
       </div>
       <div class="hidden lg:block">
         <div class="bg-white/10 backdrop-blur rounded-2xl border border-white/15 p-5 shadow-2xl">
-          <div class="flex items-center justify-between text-xs font-semibold text-brand-200 mb-3"><span>PROFESSOR MATCH</span><span class="bg-emerald-400/20 text-emerald-300 px-2 py-0.5 rounded-full">Feasibility 87%</span></div>
+          <div class="flex items-center justify-between text-xs font-semibold text-brand-200 mb-3"><span>PROFESSOR MATCH</span><span class="bg-emerald-400/20 text-emerald-300 px-2 py-0.5 rounded-full">Research fit · 6 overlaps</span></div>
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-fuchsia-500 grid place-items-center font-display font-bold text-lg">EK</div>
             <div><p class="font-bold">Dr. Elena Kowalski</p><p class="text-xs text-brand-200">Assoc. Prof · Computer Science · TU Munich</p></div>
@@ -269,7 +269,7 @@
     <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6 items-start">
       <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-7">
         <h2 class="font-display font-extrabold text-xl">Tell us about you</h2>
-        <p class="text-sm text-slate-500 mt-1">Used to personalize drafts and compute acceptance feasibility. Stored only in your browser.</p>
+        <p class="text-sm text-slate-500 mt-1">Used to personalize drafts and compute the transparent Research Fit Score. Every field is quoted into your email <b>verbatim</b> — only enter results, experience and institutions you can confirm. Stored only in your browser.</p>
 
         <div class="mt-5 grid sm:grid-cols-2 gap-4">
           <div class="sm:col-span-2">
@@ -295,6 +295,14 @@
           <div class="sm:col-span-2">
             <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pTopic">Your thesis / research interest * <span class="normal-case font-medium text-slate-400">(drives the fit score)</span></label>
             <textarea id="pTopic" rows="2" class="fld resize-none" placeholder="e.g. Efficient attention mechanisms for low-resource transformer inference on edge devices"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pIntake">Intended intake <span class="normal-case font-medium text-slate-400">(UNR advises stating it)</span></label>
+            <select id="pIntake" class="fld"><option value="">Not specified</option></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="pWebsite">Academic website / profile <span class="normal-case font-medium text-slate-400">(optional — goes in signature)</span></label>
+            <input id="pWebsite" class="fld" placeholder="https://orcid.org/… or your personal site" />
           </div>
           <div class="sm:col-span-2">
             <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">Skills &amp; tools <span class="normal-case font-medium text-slate-400">(press Enter to add)</span></label>
@@ -379,7 +387,7 @@
       <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6 space-y-5">
         <div>
           <h2 class="font-display font-extrabold text-xl">Draft engine</h2>
-          <p class="text-sm text-slate-500 mt-1">Every output is hard-capped at <strong>150 words</strong> and scrubbed of AI clichés.</p>
+          <p class="text-sm text-slate-500 mt-1">Strict separation: <b>verified facts</b> (name, affiliation, publications) are only used when a source backs them; <b>your profile fields</b> come from Step 2; everything else is generated language. Target length ≈ <b>120–180 words</b>, limit configurable in ⚙ Settings.</p>
         </div>
 
         <div>
@@ -406,8 +414,17 @@
           <label class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 rounded-full px-3 py-1.5 cursor-pointer"><input id="optAvailable" type="checkbox" class="rounded border-slate-300" checked/> Mention start date</label>
         </div>
 
-        <button id="genBtn" onclick="LD.generate()" class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-3.5 text-sm shadow-card transition">✍ Generate draft (&lt;150 words)</button>
+        <button id="genBtn" onclick="LD.generate()" class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-3.5 text-sm shadow-card transition">✍ Generate draft (~120–180 words)</button>
         <p id="genHint" class="text-[11px] text-slate-400 leading-snug"></p>
+
+        <!-- Fact-provenance ledger: verified facts vs user profile vs generated language -->
+        <div class="border-t border-slate-100 pt-4">
+          <div class="flex items-center justify-between mb-2">
+            <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Fact provenance — every claim in this email</p>
+            <button onclick="LD.renderProvenance()" class="btn-mini !text-[10px]" title="Re-run the audit">↻ Re-audit</button>
+          </div>
+          <div id="provBody" class="text-sm space-y-2"><p class="text-slate-400 text-xs">Generate a draft to see which statements are backed by a source, which come from your own Step 2 profile, and which are AI/template language you must proofread.</p></div>
+        </div>
 
         <div class="border-t border-slate-100 pt-4">
           <p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Email verification — 4 honest levels</p>
@@ -420,7 +437,7 @@
       <div class="bg-white rounded-2xl shadow-card border border-slate-200 overflow-hidden">
         <div class="px-5 sm:px-6 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 bg-slate-50/60">
           <div class="flex items-center gap-3 min-w-0">
-            <span id="wcPill" class="wc-pill shrink-0">0 / 150</span>
+            <span id="wcPill" class="wc-pill shrink-0" title="Body word count — excludes subject and signature">0 / 180</span>
             <span id="clichePill" class="shrink-0 text-[11px] font-bold rounded-full px-2.5 py-1 bg-slate-100 text-slate-500">clichés: 0</span>
             <span id="readTime" class="hidden sm:inline text-[11px] font-semibold text-slate-400">~0s read</span>
           </div>
@@ -432,13 +449,27 @@
         </div>
         <div class="p-5 sm:p-6">
           <div class="mb-4">
-            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="subj">Subject line</label>
+            <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="subj">Subject line <span class="normal-case font-medium text-slate-400">(should mention MSc/degree, research area and/or intake)</span></label>
             <input id="subj" class="fld" placeholder="Subject appears here" />
+            <p id="subjCheck" class="mt-1 text-[11px] font-semibold text-slate-400"></p>
           </div>
-          <textarea id="draftBody" rows="14" class="w-full rounded-xl border border-slate-300 p-4 text-[14px] leading-relaxed font-[14px] focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition resize-y font-body" placeholder="Your generated draft will appear here. You can edit freely — the word meter keeps you under 150 words."></textarea>
+          <textarea id="draftBody" rows="14" class="w-full rounded-xl border border-slate-300 p-4 text-[14px] leading-relaxed font-[14px] focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition resize-y font-body" placeholder="Your generated draft will appear here. You can edit freely — the word meter (body only, excluding subject & signature) and the fact-provenance audit re-run as you type."></textarea>
+          <p class="mt-1 text-[10px] text-slate-400">Word meter counts the <b>body only</b> — the greeting block, signature and subject are excluded. Target ≈ 120–180 words; the hard limit is configurable in ⚙ Settings.</p>
           <div id="aiNotice" class="hidden mt-3 rounded-xl border border-amber-200 bg-amber-50 text-amber-800 text-xs p-3 leading-relaxed"></div>
+
+          <!-- Final-output gate: proofreading + explicit user approval before sending -->
+          <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50/80 p-4 space-y-2.5">
+            <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Before sending — required checks</p>
+            <label class="flex items-start gap-2 text-sm cursor-pointer"><input id="apprProofread" type="checkbox" class="mt-1 rounded border-slate-300" onchange="LD.updateApprovalState()"/> <span>I have <b>proofread every sentence myself</b> (AI/template language included) and it reflects what I actually mean.</span></label>
+            <label class="flex items-start gap-2 text-sm cursor-pointer"><input id="apprFacts" type="checkbox" class="mt-1 rounded border-slate-300" onchange="LD.updateApprovalState()"/> <span>Every claim above is backed by a source or my own confirmed profile — <b>no invented funding, experience or results</b>.</span></label>
+            <label class="flex items-start gap-2 text-sm cursor-pointer"><input id="apprPaper" type="checkbox" class="mt-1 rounded border-slate-300" onchange="LD.updateApprovalState()"/> <span>I <b>opened the cited paper</b> via its DOI/publisher link and the reference says what I claim it says.</span></label>
+            <label class="flex items-start gap-2 text-sm cursor-pointer"><input id="apprAttach" type="checkbox" class="mt-1 rounded border-slate-300" onchange="LD.updateApprovalState()"/> <span>The attachments mentioned (<span id="apprAttachList">—</span>) are the files I will <b>really attach</b>.</span></label>
+            <label class="flex items-start gap-2 text-sm cursor-pointer"><input id="apprApprove" type="checkbox" class="mt-1 rounded border-slate-300" onchange="LD.updateApprovalState()"/> <span><b>Final approval:</b> I approve this exact email for sending.</span></label>
+            <p id="approvalNote" class="text-[11px] font-bold text-rose-700">⛔ Sending stays locked until all five checks are ticked.</p>
+          </div>
+
           <div class="mt-4 flex flex-wrap gap-2">
-            <button onclick="LD.openMailto()" class="rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 text-sm transition">📨 Open in mail app</button>
+            <button id="mailtoBtn" onclick="LD.openMailto()" disabled class="rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-4 py-2.5 text-sm transition">📨 Open in mail app</button>
             <button onclick="LD.downloadDraft()" class="rounded-lg border border-slate-300 bg-white hover:bg-slate-50 font-bold px-4 py-2.5 text-sm transition">⬇ Download .txt</button>
             <button onclick="LD.togglePlain()" id="plainBtn" class="rounded-lg border border-slate-300 bg-white hover:bg-slate-50 font-bold px-4 py-2.5 text-sm transition">Show raw plain text</button>
           </div>
@@ -475,8 +506,8 @@
     <div class="flex justify-between items-start"><h3 class="font-display font-extrabold text-2xl">How LetterDesk wins replies</h3><button onclick="LD.closeModal('howModal')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></div>
     <div class="mt-5 space-y-5 text-sm leading-relaxed text-slate-600">
       <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">1</span><div><b class="text-ink">Evidence-first targeting.</b> We merge three scholarly APIs so every claim in your letter (paper title, DOI, year, topic overlap) is verifiably true. Professors spot generic spam instantly — specifics don't lie.</div></div>
-      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">2</span><div><b class="text-ink">Live email verification.</b> Using Google DNS-over-HTTPS we check MX records and mailbox signals, so your effort isn't wasted on dead addresses.</div></div>
-      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">3</span><div><b class="text-ink">The 150-word rule.</b> Busy PIs reply to letters they can read in 30 seconds. Our meter blocks sending-worthy drafts over 150 words and strips clichés like “I hope this finds you well”, “delve”, “game-changer”.</div></div>
+      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">2</span><div><b class="text-ink">Honest email verification.</b> Four separate levels: published on an official university page → syntactically valid → domain has MX records → mailbox deliverability confirmed. DNS/MX checks prove only that the <em>domain accepts mail</em>; no in-browser test can confirm a specific mailbox exists or receives messages, so LetterDesk reports “not confirmed” instead of guessing.</div></div>
+      <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">3</span><div><b class="text-ink">Flexible length, strict facts.</b> Busy PIs reply to letters they can read in 30 seconds, so we target ≈120–180 words (limit configurable in Settings) — clarity beats the count. The fact-provenance ledger separates verified facts, your own profile and AI language; clichés like “I hope this finds you well” are stripped, and sending stays locked until you proofread and approve.</div></div>
       <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">4</span><div><b class="text-ink">Three generation modes.</b> Local templates (instant, offline), free Groq/Llama&nbsp;3 rewriting (bring your free API key), or the ChatGPT Prompt Builder which packages everything into one perfect prompt — no key needed.</div></div>
       <div class="flex gap-4"><span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 grid place-items-center font-display font-extrabold shrink-0">5</span><div><b class="text-ink">Know your market rate.</b> The stipend panel shows typical funded-position pay by country so you can evaluate offers quickly.</div></div>
     </div>
@@ -511,8 +542,15 @@
         <select id="modelSel" class="fld"><option value="llama-3.3-70b-versatile">Llama 3.3 70B (best quality)</option><option value="llama-3.1-8b-instant">Llama 3.1 8B (fastest)</option><option value="mixtral-8x7b-32768">Mixtral 8x7B</option></select>
       </div>
       <div class="flex items-center justify-between bg-slate-50 rounded-xl p-3">
-        <span class="font-semibold text-slate-600">Auto-verify emails after search</span>
+        <span class="font-semibold text-slate-600">Auto-verify emails after search <span class="text-[11px] font-normal text-slate-400">(syntax + domain MX via Google DoH — mailbox level is never claimed)</span></span>
         <label class="switch"><input id="autoVerify" type="checkbox" checked/><span class="slider"></span></label>
+      </div>
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="wordLimit">Email word limit (body, excl. subject &amp; signature)</label>
+        <div class="flex items-start gap-2">
+          <input id="wordLimit" type="number" min="80" max="300" step="10" class="fld !w-28" value="180"/>
+          <p class="text-[12px] leading-snug text-slate-500">Recommended initial-email range: <b>≈120–180 words</b>. The limit is a guardrail, not a goal — some professors/departments prefer more detail, so keep it flexible. Over-limit drafts are flagged and must be handled before sending.</p>
+        </div>
       </div>
       <button onclick="LD.saveSettings()" class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2.5 transition">Save settings</button>
     </div>
