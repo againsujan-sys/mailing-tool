@@ -69,7 +69,7 @@ var LD=(window.LD=window.LD||{});
 
     /* Professor's name & title — verify against the official university profile */
     if(p.nameVerified === true)
-      row("Professor's name & title","ok","Confirmed against "+(p.nameVerifiedSource||"the official university profile page"),"":"" );
+      row("Professor's name & title","ok","Confirmed against "+(p.nameVerifiedSource||"the official university profile page"),"");
     else if(p.title && official)
       row("Professor's name & title","warn","Name + title taken from the linked official page ("+srcUrl+") — open it and confirm the exact current title before sending.","Open the profile link; fix the salutation if the title differs.");
     else if(p.name)

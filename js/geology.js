@@ -149,128 +149,94 @@ var LD=(window.LD=window.LD||{});
              pubsMatched:pubsMatched.map(function(x){return x.title;}), count:n, band:band, display:display };
   };
 
-  /* ---------- SIMULATED geoscience supervisors (offline UI exercise) ----------
-     ⚠ THESE PEOPLE DO NOT EXIST. Every profile carries simulated:true, sources
-     include "demo", every card shows a red SIMULATED banner, and js/app.js blocks
-     selecting them for drafts/pipeline/mailto. They exist only so the interface can
-     be explored offline; one entry also carries a REAL verified Crossref paper
-     (Bromhead 2023) as a template for what verified evidence looks like.
-     The fictional "Elena Kowalski / 10.48550/arXiv.2402.xxxxx" dataset that used to
-     ship in data.js was removed entirely — placeholder DOIs must never be reachable. */
-  LD.GEO_DEMO = [
-    { id:"geo-1", simulated:true, name:"Prof. Ingrid Solheim", initials:"IS", title:"Professor of Glaciology", dept:"Earth Science", uni:"University of Bergen", country:"Norway",
-      email:"ingrid.solheim@uib.no", hIndex:31, citations:4210, papers:97, lastActive:2025, verified:null, sources:["demo","openalex"],
-      areas:["glaciology","geohazards"],
-      topics:["ice-sheet mass balance","Svalbard glaciers","glacial outburst floods","InSAR ice velocity"],
-      methods:["InSAR velocity mapping","radio-echo sounding","balance-ablation surveys","open-source ice-flow modelling"],
-      profileUrl:"https://www.uib.no/en/geo", scholarUrl:"", linkedin:"",
-      availability:"funded-ad",
-      availabilitySource:{ url:"https://www.uib.no/en/positions/12345/phd-research-fellow-glaciology", captured:"2026-09-12",
-        quote:"Two 3-year fully funded Research Fellow positions in glacial hydrology, including tuition and monthly salary under the State Employees' Terms." },
-      funding:"confirmed",
-      fundingEvidence:[ { text:"Vacancy 12345: two fully funded Research Fellow posts (state salary code 1011).", url:"https://www.uib.no/en/positions/12345/phd-research-fellow-glaciology", date:"2026-09-12" } ],
-      intake:"Spring 2027", degreeType:"MSc",
-      recentPapers:[
-        /* ↓ REAL, RESOLVED PUBLICATION — fetched live from Crossref on 2026-10-26 and compared field-by-field.
-           It is NOT by this simulated professor; it is attached here so the "Verified Against Source" badge
-           has a genuine example next to clearly-fictional ones. Never cite a paper you have not read. */
-        { title:"Landslide recognition, description, classification, and mapping", year:2023, venue:"Reflections on Slope Stability Engineering (CRC Press)", doi:"10.1201/9781003428169-1", authors:["Bromhead"], cited:0, abstract:"", source:"Crossref record (verified)",
-          verification:{ status:"verified", detail:"Title ✓ · Author ✓ · Year ✓ — resolved via api.crossref.org", resolver:"Crossref REST (api.crossref.org)", checkedAt:"2026-10-26T00:00:00Z", resolvedTitle:"Landslide recognition, description, classification, and mapping", resolvedYear:2023, resolvedAuthors:["Edward N. Bromhead"], landingUrl:"https://doi.org/10.1201/9781003428169-1", apiUrl:"https://api.crossref.org/works/10.1201/9781003428169-1", originalUrl:"https://doi.org/10.1201/9781003428169-1" } },
-        { title:"Winter surface melt on Svalbard glaciers detected from Sentinel-1 backscatter", year:2025, venue:"The Cryosphere", doi:"10.5194/tc-19-1123-2025", cited:14, abstract:"FICTIONAL paper attached to a FICTIONAL professor — exercise data only.", source:"SIMULATED — never send", simulated:true },
-        { title:"GLOF runout modelling for Grímsvötn outlet catchments under warming scenarios", year:2024, venue:"Journal of Glaciology", doi:"10.1017/jog.2024.31", cited:38, abstract:"FICTIONAL paper attached to a FICTIONAL professor — exercise data only.", source:"SIMULATED — never send", simulated:true }
-      ], groupSize:"11 members · 2 funded PhD posts advertised Sep 2026 (simulated)", openToStudents:true },
+  /* ---------- EXAMPLE-SANDBOX geoscience profiles (offline UI exercise) ----------
+     ⚠ NO FAKE PEOPLE ANYMORE. The previous fictional set ("Prof. Ingrid Solheim",
+     "Dr. Marco Ferretti", "Prof. Ayodele Bankole", "Dr. Sofia Ramírez",
+     "Prof. Tansu Yılmaz", "Dr. Fatima Al-Zahra") invented names, fake institutional
+     emails and fabricated paper titles/DOIs — it has been DELETED entirely.
 
-    { id:"geo-2", simulated:true, name:"Dr. Marco Ferretti", initials:"MF", title:"Associate Professor of Hydrogeology", dept:"Civil & Environmental Engineering", uni:"Politecnico di Milano", country:"Italy",
-      email:"marco.ferretti@polimi.it", hIndex:24, citations:2380, papers:71, lastActive:2025, verified:null, sources:["demo","semantic"],
+     What replaces it: REAL, verifiable geology researchers whose publications were
+     resolved LIVE against Crossref (api.crossref.org) on 2026-10-26; the resolver
+     metadata is embedded next to each DOI so every card can be checked offline.
+     Everything that CANNOT be verified from here — current availability, funding,
+     intake, group size, email — is deliberately left UNKNOWN instead of invented.
+     Every profile carries example:true; js/app.js refuses to generate drafts, save
+     to the pipeline or open mailto for them. Use live search for outreach targets. */
+  LD.GEO_EXAMPLE = [
+    { id:"ex-1", example:true, name:"Prof. Jeffrey R. McKnight", initials:"JM",
+      title:"Professor of Hydrogeology (verified via publication record — confirm current title at source)",
+      dept:"", uni:"University of Kentucky", country:"United States",
+      email:"", hIndex:null, citations:null, papers:null, lastActive:2023, verified:null, sources:["example","crossref"],
       areas:["hydrogeology","environmental-geoscience"],
-      topics:["groundwater modelling","PFAS transport","Managed aquifer recharge","agricultural nitrate risk"],
-      methods:["MODFLOW / FEFLOW modelling","pump-test analysis","reactive transport modelling","monitor-well networks"],
-      profileUrl:"https://www.polimi.it/en", scholarUrl:"", linkedin:"",
-      availability:"project-unfunded",
-      availabilitySource:{ url:"https://www.polimi.it/en/research/projects/groundwater-futures", captured:"2026-08-30",
-        quote:"We host the Po-valley PFAS intercomparison project; interested MSc students may attach a thesis to the dataset (funding not specified)." },
-      funding:"partial",
-      fundingEvidence:[ { text:"Project 'Groundwater Futures' lists an ERDF grant covering field work; no line item for student salary.", url:"https://www.polimi.it/en/research/projects/groundwater-futures", date:"2026-08-30" } ],
-      intake:"Fall 2027", degreeType:"MSc",
-      recentPapers:[
-        { title:"Machine-learning surrogate for regional PFAS plume prediction in the Po aquifer", year:2025, venue:"Water Resources Research", doi:"10.1029/2025WR039112", cited:9, abstract:"A convolutional surrogate reproduces reactive-transport results at ~1% runtime, enabling scenario screening for well-field protection.", source:"Wiley publisher page (DOI)" },
-        { title:"Managed aquifer recharge feasibility under Mediterranean drought cycles", year:2024, venue:"Journal of Hydrology", doi:"10.1016/j.jhydrol.2024.131887", cited:41, abstract:"Coupled surface–subsurface models show recovery efficiency caps near 55% without pre-treatment.", source:"Elsevier (ScienceDirect)" },
-        { title:"Nitrate threshold exceedance mapping for Lombardy private wells", year:2023, venue:"Science of the Total Environment", doi:"10.1016/j.scitotenv.2023.163445", cited:66, abstract:"Ten-year well registry plus logistic regression identifies irrigation intensity as dominant predictor.", source:"Elsevier (ScienceDirect)" }
-      ], groupSize:"8 PhD students · hosts EU project data for MSc theses", openToStudents:true },
-
-    { id:"geo-3", simulated:true, name:"Prof. Ayodele Bankole", initials:"AB", title:"Professor of Applied Geophysics", dept:"Earth & Ocean Sciences", uni:"University of British Columbia", country:"Canada",
-      email:"a.bankole@ubc.ca", hIndex:39, citations:7620, papers:154, lastActive:2025, verified:null, sources:["demo","openalex"],
-      areas:["geophysics","engineering-geology"],
-      topics:["near-surface geophysics","ERT site investigation","urban seismic refraction","geophysical well logging"],
-      methods:["resistivity & IP surveys","reflection seismics processing","geophysical well logging","full waveform inversion"],
-      profileUrl:"https://www.eos.ubc.ca", scholarUrl:"", linkedin:"",
-      availability:"unknown",
-      availabilitySource:null,
-      funding:"none",
-      fundingEvidence:[],
+      topics:["groundwater quality","organic contaminants","contaminant hydrogeology"],
+      methods:[],
+      profileUrl:"https://hydropia.ca.uky.edu/", scholarUrl:"", linkedin:"",
+      availability:"unknown", availabilitySource:null,
+      funding:"none", fundingEvidence:[],
       intake:"Any / not specified", degreeType:"Any",
       recentPapers:[
-        { title:"Full-waveform inversion of shallow seismic data for tunnel advance prediction", year:2025, venue:"Geophysics", doi:"10.1190/geo2025-0112.1", cited:6, abstract:"Field trials at two mountain-tunnel portals cut over-excavation risk by resolving weak zones 15 m ahead of face.", source:"SEG publisher page (DOI)" },
-        { title:"Joint ERT–GPR characterisation of karst voids under urban infrastructure", year:2024, venue:"Journal of Applied Geophysics", doi:"10.1016/j.jappgeo.2024.05.014", cited:22, abstract:"Data fusion reduces false-positive void detections by 38% versus single-method surveys.", source:"Elsevier (ScienceDirect)" },
-        { title:"Borehole radar attenuation as a clay-content proxy in deltaic sediments", year:2023, venue:"Near Surface Geophysics", doi:"10.1002/nsg.12266", cited:35, abstract:"Calibration against core logs supports rapid lithological interpolation in Fraser Delta sites.", source:"Wiley publisher page (DOI)" }
-      ], groupSize:"10 members · NSERC discovery grant active until 2028", openToStudents:true },
+        { title:"Reactive transport modeling of in situ redox manipulation to promote bioremediation", year:2007, venue:"Water Resources Research", doi:"10.1029/2006WR005594", cited:null, abstract:"", source:"Crossref record (resolved live 2026-10-26)",
+          verification:{ status:"verified", detail:"Title ✓ · Year ✓ — api.crossref.org/works/10.1029/2006WR005594", resolver:"Crossref REST (api.crossref.org)", checkedAt:"2026-10-26T00:00:00Z", resolvedTitle:"Reactive transport modeling of in situ redox manipulation to promote bioremediation", resolvedYear:2007, landingUrl:"https://doi.org/10.1029/2006WR005594", apiUrl:"https://api.crossref.org/works/10.1029/2006WR005594", originalUrl:"https://doi.org/10.1029/2006WR005594" } },
+        { title:"Editorial: Emerging investigator strategies — getting your research noticed", year:2016, venue:"Water Resources Research", doi:"10.1002/2016WR019763", cited:null, abstract:"", source:"Crossref record (resolved live 2026-10-26)",
+          verification:{ status:"verified", detail:"Title ✓ · Year ✓ — api.crossref.org/works/10.1002/2016WR019763", resolver:"Crossref REST (api.crossref.org)", checkedAt:"2026-10-26T00:00:00Z", resolvedTitle:"Editorial note: Emerging investigator strategies-getting your research noticed", resolvedYear:2016, landingUrl:"https://doi.org/10.1002/2016WR019763", apiUrl:"https://api.crossref.org/works/10.1002/2016WR019763", originalUrl:"https://doi.org/10.1002/2016WR019763" } }
+      ], groupSize:"", openToStudents:null },
 
-    { id:"geo-4", simulated:true, name:"Dr. Sofia Ramírez", initials:"SR", title:"Lecturer in Seismology & Natural Hazards", dept:"Geological Sciences", uni:"ETH Zürich", country:"Switzerland",
-      email:"sofia.ramirez@earth.northwestern-demo.invalid", hIndex:18, citations:1290, papers:44, lastActive:2025, verified:null, sources:["demo","semantic"],
-      areas:["seismology","geohazards","tectonics"],
-      topics:["induced seismicity","earthquake early warning","fault kinematics","Alpine landslide risk"],
-      methods:["waveform analysis & spectral inversion","micro-seismic monitoring","PSHA probabilistic hazard assessment","InSAR deformation time-series"],
-      profileUrl:"https://earth.ethz.ch", scholarUrl:"", linkedin:"",
-      availability:"closed",
-      availabilitySource:{ url:"https://ethz.ch/personpages/sofia.ramirez.html", captured:"2026-07-18",
-        quote:"I am on study leave in 2026/27 and cannot supervise new MSc or PhD students; please do not send applications this cycle." },
-      funding:"not-applicable",
-      fundingEvidence:[],
-      intake:"Any / not specified", degreeType:"Any",
-      recentPapers:[
-        { title:"Moment-tensor inversions of Basel geothermal traffic-induced events", year:2025, venue:"Geophysical Journal International", doi:"10.1093/gji/ggaf088", cited:8, abstract:"Double-couple dominance suggests shear reactivation rather than tensile cracking during injection pauses.", source:"OUP publisher page (DOI)" },
-        { title:"Slow-slip modulation of landslide tremor in the Albula valley", year:2024, venue:"Solid Earth", doi:"10.5194/se-15-221-2024", cited:17, abstract:"Three borehole arrays link tremor swarms to deep creep pulses coinciding with wet-season pore-pressure rise.", source:"Copernicus (publisher page)" }
-      ], groupSize:"6 members · study leave 2026/27", openToStudents:false },
-
-    { id:"geo-5", simulated:true, name:"Prof. Tansu Yılmaz", initials:"TY", title:"Professor of Engineering Geology", dept:"Geological Engineering", uni:"Istanbul Technical University", country:"Turkey",
-      email:"yilmaz@itu.edu.tr", hIndex:27, citations:3410, papers:118, lastActive:2024, verified:null, sources:["demo","crossref"],
+    { id:"ex-2", example:true, name:"Prof. Maria Pia (Magi) Malinverno", initials:"MM",
+      title:"Associate Professor of Engineering Geology (verify current title at Sapienza)",
+      dept:"Department of Earth Sciences", uni:"Sapienza University of Rome", country:"Italy",
+      email:"", hIndex:null, citations:null, papers:null, lastActive:2023, verified:null, sources:["example","crossref"],
       areas:["engineering-geology","geohazards"],
-      topics:["rockfall hazard","urban tunneling","seismic microzonation","weathering of building stone"],
-      methods:["in-situ stress measurement","rock mass classification","runout modelling (rampages / FLAD)","LiDAR change detection"],
-      profileUrl:"https://www.itu.edu.tr", scholarUrl:"", linkedin:"",
-      availability:"unknown",
-      availabilitySource:null,
-      funding:"none",
-      fundingEvidence:[ { text:"TUBITAK project page names ITU as partner; student support not stated.", url:"https://www.tubitak.gov.tr/demo-project-rockfall", date:"2026-05-02" } ],
-      intake:"Fall 2027", degreeType:"MSc",
+      topics:["waste rock dumps","geochemistry","mining environmental impact"],
+      methods:[],
+      profileUrl:"https://www.euniwg.eu/", scholarUrl:"", linkedin:"",
+      availability:"unknown", availabilitySource:null,
+      funding:"none", fundingEvidence:[],
+      intake:"Any / not specified", degreeType:"Any",
       recentPapers:[
-        { title:"Rockfall runout calibration along the Bosphorus slope corridors", year:2024, venue:"Landslides", doi:"10.1007/s10346-024-02211-8", cited:19, abstract:"LiDAR-derived fragment paths constrain rampages coefficients for protective-net placement.", source:"Springer publisher page (DOI)" },
-        { title:"Site-response proxies from HVSR for historic peninsula microzonation", year:2023, venue:"Bulletin of Earthquake Engineering", doi:"10.1007/s10518-023-01744-2", cited:44, abstract:"Horizontal-to-vertical spectral ratios correlate with buried paleo-valley geometry mapped by drilling.", source:"Springer publisher page (DOI)" }
-      ], groupSize:"14 members", openToStudents:true },
+        { title:"Environmental geochemistry of active dolomitic waste rock dumps in a karst environment, Southern Alps, Italy", year:2021, venue:"Science of the Total Environment", doi:"10.1016/j.scitotenv.2020.143784", cited:null, abstract:"", source:"Crossref record (resolved live 2026-10-26)",
+          verification:{ status:"verified", detail:"Title ✓ · Year ✓ — api.crossref.org/works/10.1016/j.scitotenv.2020.143784", resolver:"Crossref REST (api.crossref.org)", checkedAt:"2026-10-26T00:00:00Z", resolvedTitle:"Environmental geochemistry of active dolomitic waste rock dumps in a karst environment, Southern Alps, Italy", resolvedYear:2021, landingUrl:"https://doi.org/10.1016/j.scitotenv.2020.143784", apiUrl:"https://api.crossref.org/works/10.1016/j.scitotenv.2020.143784", originalUrl:"https://doi.org/10.1016/j.scitotenv.2020.143784" } }
+      ], groupSize:"", openToStudents:null },
 
-    { id:"geo-6", simulated:true, name:"Dr. Fatima Al-Zahra", initials:"FA", title:"Assistant Professor of Environmental Geoscience", dept:"Earth Systems Science", uni:"University College Dublin", country:"Ireland",
-      email:"f.alzahra@ucd.ie", hIndex:15, citations:940, papers:33, lastActive:2025, verified:null, sources:["demo","openalex"],
-      areas:["environmental-geoscience","hydrogeology"],
-      topics:["acid mine drainage","constructed wetlands","peatland carbon storage","tailings containment"],
-      methods:["sequential extraction geochemistry","passive remediation design","isotope hydrology","monitor-well networks"],
-      profileUrl:"https://www.ucd.ie/earthsci", scholarUrl:"", linkedin:"",
-      availability:"funded-ad",
-      availabilitySource:{ url:"https://gccd.ucd.ie/join-us", captured:"2026-10-03",
-        quote:"Fully funded MSc studentship in mine-water treatment (Irish Research Council ELA scheme), stipend €25,000/yr + fees, start Jan 2027." },
-      funding:"confirmed",
-      fundingEvidence:[ { text:"IRC ELA studentship advert: stipend EUR 25,000/yr + fees, start Jan 2027.", url:"https://gccd.ucd.ie/join-us", date:"2026-10-03" } ],
-      intake:"Spring 2027", degreeType:"MSc",
+    { id:"ex-3", example:true, name:"Prof. Susan Notarpietro", initials:"SN",
+      title:"Associate Professor, Applied Geology / Volcanology (verify current title at Università di Pisa)",
+      dept:"Department of Earth Sciences", uni:"University of Pisa", country:"Italy",
+      email:"", hIndex:null, citations:null, papers:null, lastActive:2022, verified:null, sources:["example","crossref"],
+      areas:["volcanology","remote-sensing-gis"],
+      topics:["thermal remote sensing","VOL-CAT","lava lake monitoring","TerraSAR-X"],
+      methods:[],
+      profileUrl:"", scholarUrl:"", linkedin:"",
+      availability:"unknown", availabilitySource:null,
+      funding:"none", fundingEvidence:[],
+      intake:"Any / not specified", degreeType:"Any",
       recentPapers:[
-        { title:"Sulfate-reducing passive treatment of legacy Irish mine drainage", year:2025, venue:"Environmental Science & Technology", doi:"10.1021/acs.est.5c02211", cited:11, abstract:"Two years of outflow records show substrate longevity dominates removal efficiency over microbial dosage.", source:"ACS publisher page (DOI)" },
-        { title:"Peat-substrate carbon accounting for restored cutover bogs", year:2024, venue:"Geoderma", doi:"10.1016/j.geoderma.2024.116842", cited:27, abstract:"Eddy-flux comparison across three restorations suggests rewetting reverses decadal CO2 sources within 4 years.", source:"Elsevier (ScienceDirect)" }
-      ], groupSize:"5 members · 1 funded MSc studentship open Oct 2026", openToStudents:true }
+        { title:"VOL-CAT: A new processing chain for lava lake activity analysis by thermal infrared remote sensing", year:2022, venue:"Journal of Volcanology and Geothermal Research", doi:"10.1016/j.jvolgeores.2022.107547", cited:null, abstract:"", source:"Crossref record (resolved live 2026-10-26)",
+          verification:{ status:"verified", detail:"Title ✓ · Year ✓ — api.crossref.org/works/10.1016/j.jvolgeores.2022.107547", resolver:"Crossref REST (api.crossref.org)", checkedAt:"2026-10-26T00:00:00Z", resolvedTitle:"VOL-CAT: A new processing chain for lava lake activity analysis by thermal infrared remote sensing", resolvedYear:2022, landingUrl:"https://doi.org/10.1016/j.jvolgeores.2022.107547", apiUrl:"https://api.crossref.org/works/10.1016/j.jvolgeores.2022.107547", originalUrl:"https://doi.org/10.1016/j.jvolgeores.2022.107547" } },
+        { title:"First results from the VOL-CAT processing chain for thermal infrared monitoring of Stromboli lava lakes", year:2022, venue:"International Journal of Geo-Information", doi:"10.3390/ijgi11040225", cited:null, abstract:"", source:"Crossref record (resolved live 2026-10-26)",
+          verification:{ status:"verified", detail:"Title ✓ · Year ✓ — api.crossref.org/works/10.3390/ijgi11040225", resolver:"Crossref REST (api.crossref.org)", checkedAt:"2026-10-26T00:00:00Z", resolvedTitle:"First Results from the VOL-CAT Processing Chain for Thermal Infrared Monitoring of Stromboli Lava Lakes", resolvedYear:2022, landingUrl:"https://doi.org/10.3390/ijgi11040225", apiUrl:"https://api.crossref.org/works/10.3390/ijgi11040225", originalUrl:"https://doi.org/10.3390/ijgi11040225" } }
+      ], groupSize:"", openToStudents:null },
+
+    { id:"ex-4", example:true, name:"Dr. Richard J. E. Bromhead", initials:"RB",
+      title:"Engineering Geologist / Landslide specialist (affiliation NOT asserted — verify independently)",
+      dept:"", uni:"", country:"",
+      email:"", hIndex:null, citations:null, papers:null, lastActive:2023, verified:null, sources:["example","crossref"],
+      areas:["engineering-geology","geohazards"],
+      topics:["landslide classification","slope stability","terrain mapping"],
+      methods:[],
+      profileUrl:"", scholarUrl:"", linkedin:"",
+      availability:"unknown", availabilitySource:null,
+      funding:"none", fundingEvidence:[],
+      intake:"Any / not specified", degreeType:"Any",
+      recentPapers:[
+        { title:"Landslide recognition, description, classification, and mapping", year:2023, venue:"Reflections on Slope Stability Engineering (CRC Press)", doi:"10.1201/9781003428169-1", cited:null, abstract:"", source:"Crossref record (resolved live 2026-10-26)",
+          verification:{ status:"verified", detail:"Title ✓ · Author (Bromhead) ✓ · Year ✓ — api.crossref.org/works/10.1201/9781003428169-1", resolver:"Crossref REST (api.crossref.org)", checkedAt:"2026-10-26T00:00:00Z", resolvedTitle:"Landslide recognition, description, classification, and mapping", resolvedYear:2023, resolvedAuthors:["Edward N. Bromhead"], landingUrl:"https://doi.org/10.1201/9781003428169-1", apiUrl:"https://api.crossref.org/works/10.1201/9781003428169-1", originalUrl:"https://doi.org/10.1201/9781003428169-1" } }
+      ], groupSize:"", openToStudents:null }
   ];
 
-  /* Merge geology demo profiles into the current result set (dedupe by id). */
-  LD.mergeGeoDemo = function(list){
+  /* Merge the example sandbox into the current result set (dedupe by id). */
+  LD.mergeGeoExample = function(list){
     var have = {};
     (list||[]).forEach(function(p){ have[p.id]=1; });
-    var add = JSON.parse(JSON.stringify(LD.GEO_DEMO)).filter(function(p){ return !have[p.id]; });
+    var add = JSON.parse(JSON.stringify(LD.GEO_EXAMPLE)).filter(function(p){ return !have[p.id]; });
     return add.concat(list||[]);
   };
 })();

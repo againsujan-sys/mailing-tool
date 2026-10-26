@@ -5,12 +5,20 @@ var LD=(window.LD=window.LD||{});
    • The previous "LD.DEMO_PROFESSORS" set (Dr. Elena Kowalski, Prof. Daniel Okafor,
      Dr. Mei-Ling Chen, Prof. Sarah Whitfield …) was FICTIONAL: invented people,
      invented universities, invented DOIs (some containing placeholder runs such as
-     "xxxxx"). Fictional papers must NEVER be able to flow into a real email, so the
-     dataset has been DELETED from this file and from the app.
-   • The only simulated profiles still shipped are LD.GEO_DEMO in js/geology.js. They
-     are hard-labelled SIMULATED everywhere (id prefix "geo-", sources include "demo",
-     red banner on every card, excluded from drafts/pipeline/mailto by name+flag checks
-     in js/app.js). Live search results carry no "demo" source tag.
+     "xxxxx") and COMPUTER-SCIENCE examples ("sparse attention", "efficient
+     transformers"). Fictional papers must NEVER be able to flow into a real email,
+     so the dataset has been DELETED from this file and from the app.
+   • A second fictional set (LD.GEO_DEMO — "Prof. Ingrid Solheim", "Dr. Marco
+     Ferretti", "Prof. Ayodele Bankole", "Dr. Sofia Ramírez", "Prof. Tansu Yılmaz",
+     "Dr. Fatima Al-Zahra") also shipped in js/geology.js with fake emails at real
+     institutions and fabricated paper titles/DOIs. It has been DELETED as well.
+     The offline UI sandbox is now LD.GEO_EXAMPLE in js/geology.js: clearly marked
+     EXAMPLE-SANDBOX entries that use REAL geology researchers and ONLY publications
+     independently resolved live against Crossref on 2026-10-26 (resolver metadata is
+     embedded next to each DOI). Availability/funding fields are deliberately EMPTY
+     ("unknown — verify at source"), so nothing unverifiable can reach a draft.
+     js/app.js refuses to build drafts or send for any profile flagged example:true.
+   • Live search results carry no "demo"/"example" source tag.
    • The old LD.STIPENDS table showed unsourced historical averages ("$2,000–3,200").
      Those numbers were presented without date, currency basis or source, which can be
      mistaken for current offers. They are replaced by the structured funding-record
