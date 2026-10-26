@@ -154,13 +154,13 @@
       <div class="grid md:grid-cols-[1.6fr_1fr_1fr_auto] gap-3 items-end">
         <div>
           <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="q">Research topic or professor name</label>
-          <input id="q" type="text" placeholder="e.g. graph neural networks, solar perovskites, NLP…"
+          <input id="q" type="text" placeholder="e.g. hydrogeology, glacier dynamics, Prof. Ingrid Solheim…"
                  class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition" />
         </div>
         <div>
           <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="country">Country (optional)</label>
           <select id="country" class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none">
-            <option value="">Anywhere</option><option>United States</option><option>United Kingdom</option><option>Germany</option><option>Canada</option><option>Australia</option><option>Netherlands</option><option>Switzerland</option><option>Sweden</option><option>France</option><option>Singapore</option><option>Japan</option><option>South Korea</option><option>Ireland</option><option>Denmark</option><option>Finland</option><option>Norway</option><option>New Zealand</option><option>Italy</option><option>Spain</option>
+            <option value="">Anywhere</option><option>United States</option><option>United Kingdom</option><option>Germany</option><option>Canada</option><option>Australia</option><option>Netherlands</option><option>Switzerland</option><option>Sweden</option><option>France</option><option>Singapore</option><option>Japan</option><option>South Korea</option><option>Ireland</option><option>Denmark</option><option>Finland</option><option>Norway</option><option>New Zealand</option><option>Italy</option><option>Spain</option><option>Turkey</option><option>Austria</option><option>Belgium</option><option>Poland</option><option>Czechia</option><option>Greece</option><option>Portugal</option><option>Brazil</option><option>Chile</option><option>South Africa</option><option>India</option><option>China</option><option>Israel</option><option>Kenya</option><option>Morocco</option><option>Iceland</option>
           </select>
         </div>
         <div>
@@ -175,13 +175,51 @@
         <button id="searchBtn" onclick="LD.search()" class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-3 text-sm shadow-card transition whitespace-nowrap">Search</button>
       </div>
 
+      <!-- Geology-specific search filters -->
+      <details id="geoFiltersBox" class="mt-4 rounded-xl border border-slate-200 bg-slate-50/70 open:bg-white" >
+        <summary class="cursor-pointer select-none px-4 py-3 flex items-center justify-between list-none">
+          <span class="text-sm font-bold text-slate-700">🪨 Field &amp; supervisor filters <span class="font-medium text-slate-400">(research area · institution · country · degree · intake · availability)</span></span>
+          <span class="text-slate-400 text-xs">▾</span>
+        </summary>
+        <div class="px-4 pb-4 pt-1 border-t border-slate-200">
+          <p class="text-[11px] font-bold uppercase tracking-wide text-slate-500 mt-3 mb-2">Geoscience research areas <span class="normal-case font-medium text-slate-400">(match any)</span></p>
+          <div id="areaChips" class="flex flex-wrap gap-1.5"></div>
+          <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="fInstitution">Institution</label>
+              <input id="fInstitution" class="fld" placeholder="e.g. ETH Zürich" oninput="LD.renderResults()"/>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="fDegree">Degree type</label>
+              <select id="fDegree" class="fld" onchange="LD.renderResults()"><option value="">Any</option></select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="fIntake">Intended intake</label>
+              <select id="fIntake" class="fld" onchange="LD.renderResults()"><option value="">Any</option></select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="fAvail">Supervisor availability</label>
+              <select id="fAvail" class="fld" onchange="LD.renderResults()">
+                <option value="">Any status</option>
+                <option value="funded-ad">Funded MSc position advertised</option>
+                <option value="project-unfunded">Project advertised · funding unconfirmed</option>
+                <option value="unknown">Availability unknown</option>
+                <option value="closed">Not accepting students (confirmed)</option>
+              </select>
+            </div>
+          </div>
+          <p class="mt-3 text-[11px] leading-snug text-slate-400">⚠ Availability and funding are <b>separate facts from publications</b>. A professor publishing actively in 2025 does not imply an open or funded position — those claims need a dated vacancy/project source, which the cards below record.</p>
+        </div>
+      </details>
+
       <div class="mt-3 flex flex-wrap gap-2 text-xs">
         <span class="text-slate-400 font-semibold self-center">Try:</span>
         <button class="chip" onclick="LD.quick('reinforcement learning robots','')">reinforcement learning</button>
         <button class="chip" onclick="LD.quick('perovskite solar cells','Germany')">perovskite solar · DE</button>
-        <button class="chip" onclick="LD.quick('large language models','United States')">LLMs · US</button>
-        <button class="chip" onclick="LD.quick('epidemiology biostatistics','United Kingdom')">epidemiology · UK</button>
-        <button class="chip" onclick="LD.quick('computational fluid dynamics','Canada')">CFD · CA</button>
+        <button class="chip" onclick="LD.quick('hydrogeology groundwater modelling','Netherlands')">hydrogeology · NL</button>
+        <button class="chip" onclick="LD.quick('glaciology ice sheet mass balance','Norway')">glaciology · NO</button>
+        <button class="chip" onclick="LD.quick('seismology induced seismicity','Switzerland')">seismology · CH</button>
+        <button class="chip" onclick="LD.loadGeoDemo()">🪨 geology demo supervisors</button>
       </div>
 
       <!-- status -->
@@ -210,8 +248,10 @@
               <option value="fit">Best fit score</option><option value="hindex">Highest h-index</option><option value="recent">Most recent papers</option><option value="cited">Most cited</option>
             </select>
             <label class="ml-2 inline-flex items-center gap-1.5 font-semibold text-slate-500 cursor-pointer"><input id="onlyVerified" type="checkbox" class="rounded border-slate-300" onchange="LD.renderResults()"/> Verified emails only</label>
+            <label class="ml-2 inline-flex items-center gap-1.5 font-semibold text-slate-500 cursor-pointer"><input id="hideClosed" type="checkbox" class="rounded border-slate-300" onchange="LD.renderResults()"/> Hide “not accepting”</label>
           </div>
         </div>
+        <p class="mb-4 mt-1 text-[11px] leading-snug text-slate-400">Publication metrics &amp; DOIs from OpenAlex / Semantic Scholar / Crossref. Supervisor availability and funding are separately sourced fields — publications never prove an open position.</p>
         <div id="profCards" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
       </div>
 
@@ -285,21 +325,36 @@
         </div>
       </div>
 
-      <!-- Feasibility panel -->
+      <!-- Research Fit panel (replaces the old "acceptance feasibility" heuristic) -->
       <div class="space-y-6">
         <div class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
           <div class="flex items-center justify-between">
-            <h3 class="font-display font-bold">Acceptance feasibility</h3>
+            <h3 class="font-display font-bold">Research Fit Score</h3>
             <span id="feasBadge" class="text-xs font-bold rounded-full px-2.5 py-1">—</span>
           </div>
           <div class="mt-4 flex items-center gap-5">
             <div class="relative w-28 h-28 shrink-0">
               <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90"><circle cx="60" cy="60" r="52" stroke="#e2e8f0" stroke-width="10" fill="none"/><circle id="feasRing" cx="60" cy="60" r="52" stroke="#3b6cf6" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" style="transition:stroke-dashoffset .8s ease, stroke .8s"/></svg>
-              <div class="absolute inset-0 grid place-items-center"><span id="feasNum" class="font-display font-extrabold text-2xl">0</span><span class="text-[10px] font-bold text-slate-400 -mt-4 ml-7">%</span></div>
+              <div class="absolute inset-0 grid place-items-center"><span id="feasNum" class="font-display font-extrabold text-2xl">0</span><span class="text-[10px] font-bold text-slate-400 -mt-4 ml-7">overlaps</span></div>
             </div>
             <ul id="feasList" class="text-sm space-y-2 flex-1"></ul>
           </div>
-          <p class="mt-4 text-[11px] leading-snug text-slate-400">Heuristic score from topical overlap with the professor's live publications, activity recency, h-index band, contactability and profile strength. It estimates likelihood of a <em>reply</em>, not admission.</p>
+          <p class="mt-4 text-[11px] leading-snug text-slate-400"><b>Transparent by design:</b> every point below is a concrete, listed overlap between your interests/methods and this supervisor's topics or publications — nothing is hidden in weights. This score describes <em>topical alignment only</em>. It cannot and does not estimate your probability of admission, a reply, or an assistantship; no score can.</p>
+        </div>
+
+        <!-- Supervisor availability + funding evidence -->
+        <div id="availPanel" class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
+          <h3 class="font-display font-bold mb-3">Supervisor availability &amp; funding evidence</h3>
+          <div id="availBody"><p class="text-sm text-slate-400">Select a professor to inspect their recorded availability source.</p></div>
+        </div>
+
+        <!-- Publication verification panel -->
+        <div id="pubVerifyPanel" class="bg-white rounded-2xl shadow-card border border-slate-200 p-5 sm:p-6">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display font-bold">Publication verification</h3>
+            <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">open the paper before citing it ✉️</span>
+          </div>
+          <div id="pubVerifyBody" class="mt-3 space-y-3"><p class="text-sm text-slate-400">No professor selected yet.</p></div>
         </div>
 
         <div id="selProfMini" class="bg-gradient-to-br from-brand-50 to-white rounded-2xl border border-brand-200 p-5">
@@ -355,9 +410,10 @@
         <p id="genHint" class="text-[11px] text-slate-400 leading-snug"></p>
 
         <div class="border-t border-slate-100 pt-4">
-          <p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Email health check</p>
-          <div id="emailCheck" class="text-sm space-y-2"><p class="text-slate-400">Select a professor with an email to run live MX + SMTP-mailbox verification via Google DNS-over-HTTPS.</p></div>
-          <button id="verifyBtn" onclick="LD.verifySelectedEmail()" class="hidden mt-2 w-full rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold px-4 py-2 text-xs transition">🛡 Verify deliverability now</button>
+          <p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Email verification — 4 honest levels</p>
+          <div id="emailCheck" class="text-sm space-y-2"><p class="text-slate-400">Select a professor with an email to run the layered check: format → official-page listing → domain MX records → mailbox deliverability.</p></div>
+          <button id="verifyBtn" onclick="LD.verifySelectedEmail()" class="hidden mt-2 w-full rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold px-4 py-2 text-xs transition">🛡 Run full verification ladder</button>
+          <p class="mt-2 text-[10px] leading-snug text-slate-400">DNS/MX checks prove only that the <b>domain accepts mail</b>. No in-browser test can confirm a specific mailbox exists or receives messages — that needs an SMTP session, so LetterDesk marks it “not confirmed” instead of guessing.</p>
         </div>
       </div>
 
@@ -521,6 +577,7 @@ surge ./letterdesk-publish.surge --domain your-name.surge.sh</pre>
 
 <script src="js/publish.js"></script>
 <script src="js/data.js"></script>
+<script src="js/geology.js"></script>
 <script src="js/search.js"></script>
 <script src="js/draft.js"></script>
 <script src="js/app.js"></script>
