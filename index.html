@@ -41,7 +41,7 @@
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="1" onclick="LD.goStep(1)">Find Professors</button>
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="2" onclick="LD.goStep(2)">Outreach Drafts</button>
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="5" onclick="LD.goProfile()">My Academic Profile</button>
-      <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="3" onclick="LD.openModal('stipendModal')">Stipend Insights</button>
+      <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="3" onclick="LD.openFundingPanel()">Funding Evidence</button>
       <button class="nav-link px-3 py-2 rounded-lg hover:bg-slate-100" data-nav="4" onclick="LD.openModal('howModal')">How It Works</button>
       <button class="px-3 py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-bold shadow-sm" onclick="LD.openModal('publishModal')" title="Publish this portal online">🚀 Publish</button>
     </nav>
@@ -62,7 +62,7 @@
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goStep(1);LD.closeMobile()">1 · Find Professors</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goStep(2);LD.closeMobile()">2 · Outreach Drafts</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.goProfile();LD.closeMobile()">👤 My Academic Profile</button>
-    <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openModal('stipendModal');LD.closeMobile()">Stipend Insights</button>
+    <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openFundingPanel();LD.closeMobile()">Funding Evidence</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-sm font-medium" onclick="LD.openModal('howModal');LD.closeMobile()">How It Works</button>
     <button class="block w-full text-left px-3 py-2 rounded-lg bg-brand-600 text-white text-sm font-bold mt-1" onclick="LD.openModal('publishModal');LD.closeMobile()">🚀 Publish this portal</button>
   </div>
@@ -95,19 +95,21 @@
       </div>
       <div class="hidden lg:block">
         <div class="bg-white/10 backdrop-blur rounded-2xl border border-white/15 p-5 shadow-2xl">
-          <div class="flex items-center justify-between text-xs font-semibold text-brand-200 mb-3"><span>PROFESSOR MATCH</span><span class="bg-emerald-400/20 text-emerald-300 px-2 py-0.5 rounded-full">Research fit · 6 overlaps</span></div>
+          <!-- PURGED fictional hero card ("Dr. Elena Kowalski" — invented person, fake DOI,
+               unsourced €2.1k TV-L figure). Replaced by a clearly-labelled static demonstration. -->
+          <div class="flex items-center justify-between text-xs font-semibold text-brand-200 mb-3"><span>DEMONSTRATION ONLY</span><span class="bg-rose-400/20 text-rose-200 px-2 py-0.5 rounded-full uppercase tracking-wide">Example data</span></div>
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-fuchsia-500 grid place-items-center font-display font-bold text-lg">EK</div>
-            <div><p class="font-bold">Dr. Elena Kowalski</p><p class="text-xs text-brand-200">Assoc. Prof · Computer Science · TU Munich</p></div>
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-fuchsia-500 grid place-items-center font-display font-bold text-lg">EX</div>
+            <div><p class="font-bold">Example-sandbox profile</p><p class="text-xs text-brand-200">Static UI mock-up · not a real person or institution</p></div>
           </div>
           <div class="mt-3 grid grid-cols-3 gap-2 text-center">
-            <div class="bg-white/10 rounded-lg py-2"><p class="font-display font-bold text-lg">34</p><p class="text-[10px] uppercase tracking-wide text-brand-200">h-index</p></div>
-            <div class="bg-white/10 rounded-lg py-2"><p class="font-display font-bold text-lg">128</p><p class="text-[10px] uppercase tracking-wide text-brand-200">Papers</p></div>
-            <div class="bg-white/10 rounded-lg py-2"><p class="text-[#7dd3fc] font-display font-bold text-lg">€2.1k</p><p class="text-[10px] uppercase tracking-wide text-brand-200">TV-L E13/mo</p></div>
+            <div class="bg-white/10 rounded-lg py-2"><p class="font-display font-bold text-lg">—</p><p class="text-[10px] uppercase tracking-wide text-brand-200">h-index</p></div>
+            <div class="bg-white/10 rounded-lg py-2"><p class="font-display font-bold text-lg">—</p><p class="text-[10px] uppercase tracking-wide text-brand-200">Papers</p></div>
+            <div class="bg-white/10 rounded-lg py-2"><p class="text-[#fda4af] font-display font-bold text-lg">n/a</p><p class="text-[10px] uppercase tracking-wide text-brand-200">Funding</p></div>
           </div>
           <div class="mt-3 bg-white/90 text-ink rounded-xl p-3 text-[13px] leading-relaxed shadow">
-            <span class="text-[10px] font-bold uppercase tracking-widest text-brand-600">Draft preview · 96 words</span><br/>
-            Dear Prof. Kowalski — your NeurIPS 2024 work on sparse attention (DOI:10.48550/arXiv.2402.xxxxx) matches my thesis on efficient transformers…
+            <span class="text-[10px] font-bold uppercase tracking-widest text-brand-600">Draft preview layout · illustrative text only</span><br/>
+            Dear Prof. … — your recent work on ⟨verified publication, DOI⟩ matches my thesis on ⟨your topic⟩… <em>(live drafts are generated from sourced API data only)</em>
           </div>
         </div>
       </div>
@@ -166,7 +168,7 @@
       <div class="grid md:grid-cols-[1.6fr_1fr_1fr_auto] gap-3 items-end">
         <div>
           <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="q">Research topic or professor name</label>
-          <input id="q" type="text" placeholder="e.g. hydrogeology, glacier dynamics, Prof. Ingrid Solheim…"
+          <input id="q" type="text" placeholder="e.g. hydrogeology, glacier dynamics, ice-sheet mass balance…"
                  class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition" />
         </div>
         <div>
@@ -386,12 +388,12 @@
           <p class="text-sm text-slate-500">None yet — go back to Step 1 and pick a profile card.</p>
         </div>
 
-        <button onclick="LD.openModal('stipendModal')" class="w-full text-left bg-white rounded-2xl shadow-card border border-slate-200 p-5 hover:border-brand-300 transition group">
+        <button onclick="LD.openFundingPanel()" class="w-full text-left bg-white rounded-2xl shadow-card border border-slate-200 p-5 hover:border-brand-300 transition group">
           <div class="flex items-center justify-between">
-            <span class="font-display font-bold group-hover:text-brand-700">💶 Departmental stipend insights</span>
+            <span class="font-display font-bold group-hover:text-brand-700">💶 Funding evidence &amp; guidance</span>
             <span class="text-brand-600 font-bold text-sm">Open →</span>
           </div>
-          <p class="text-sm text-slate-500 mt-1">Typical RA/TA pay by country &amp; level — know your worth before you write.</p>
+          <p class="text-sm text-slate-500 mt-1">Structured, source-linked funding records from fundability.js — no unsourced pay averages.</p>
         </button>
       </div>
     </div>
@@ -509,7 +511,7 @@
     <p><span class="font-display font-extrabold text-ink">Letter<span class="text-brand-600">Desk</span></span> — outreach studio for funded RA/TA seats. Data © OpenAlex · Semantic Scholar · Crossref · Email validity via Google DNS-over-HTTPS.</p>
     <div class="flex gap-4">
       <button class="hover:text-brand-700 font-semibold" onclick="LD.openModal('howModal')">How it works</button>
-      <button class="hover:text-brand-700 font-semibold" onclick="LD.openModal('stipendModal')">Stipends</button>
+      <button class="hover:text-brand-700 font-semibold" onclick="LD.openFundingPanel()">Funding Evidence</button>
       <button class="hover:text-brand-700 font-semibold" onclick="LD.openModal('settingsModal')">Settings</button>
       <button class="hover:text-brand-700 font-semibold" onclick="LD.openModal('publishModal')">Publish</button>
     </div>
@@ -530,19 +532,12 @@
   </div>
 </div>
 
-<div id="stipendModal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" onclick="if(event.target===this)LD.closeModal('stipendModal')">
-  <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] overflow-auto p-6 sm:p-8">
-    <div class="flex justify-between items-start"><h3 class="font-display font-extrabold text-2xl">Departmental stipend insights</h3><button onclick="LD.closeModal('stipendModal')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></div>
-    <p class="text-sm text-slate-500 mt-2">Typical monthly gross pay for funded RA/TA roles at public universities (approximate, 2025–26). Taxes, tuition waivers and health insurance vary — always confirm per-department.</p>
-    <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
-      <table class="w-full text-sm min-w-[560px]">
-        <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-3">Country</th><th class="px-4 py-3">RA (grad) /mo</th><th class="px-4 py-3">TA /mo</th><th class="px-4 py-3">Tuition</th><th class="px-4 py-3">Notes</th></tr></thead>
-        <tbody id="stipendRows" class="divide-y divide-slate-100"></tbody>
-      </table>
-    </div>
-    <p class="mt-3 text-[11px] text-slate-400">US figures reflect assistantship stipends where tuition is typically waived; German TV-L E13 ≈ 65–100% posts; Netherlands follows collective labour agreement scale 13.</p>
-  </div>
-</div>
+<!-- PURGED: "Departmental stipend insights" modal. The unsourced RA/TA pay-table markup
+     (Country / RA (grad) /mo / TA /mo / Tuition / Notes + #stipendRows fed by the deleted
+     LD.STIPENDS table) was removed — average pay figures had no source URLs and violated
+     the facts-only rule. Structured, sourced funding records (js/fundability.js →
+     LD.db.funding, rendered via LD.fundingStatus / LD.renderStatusPills) are the only
+     funding UI now; see the funding strip on each professor card and Step 2's mini card. -->
 
 <div id="settingsModal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" onclick="if(event.target===this)LD.closeModal('settingsModal')">
   <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8">
@@ -564,8 +559,9 @@
       <div>
         <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5" for="wordLimit">Email word limit (body, excl. subject &amp; signature)</label>
         <div class="flex items-start gap-2">
-          <input id="wordLimit" type="number" min="80" max="300" step="10" class="fld !w-28" value="180"/>
-          <p class="text-[12px] leading-snug text-slate-500">Recommended initial-email range: <b>≈120–180 words</b>. The limit is a guardrail, not a goal — some professors/departments prefer more detail, so keep it flexible. Over-limit drafts are flagged and must be handled before sending.</p>
+          <!-- bounds mirror facts.js: LD.getWordLimit accepts 60–400; recommended band starts at LD.TARGET_LOW (120) -->
+          <input id="wordLimit" type="number" min="60" max="400" step="10" class="fld !w-28" value="180"/>
+          <p class="text-[12px] leading-snug text-slate-500">Recommended initial-email range: <b>≈<span id="wlLowBind">120</span>–<span id="wlHighBind">180</span> words</b> (from js/facts.js — not hard-coded). The limit is a guardrail, not a goal — some professors/departments prefer more detail, so keep it flexible. Over-limit drafts are flagged and must be handled before sending.</p>
         </div>
       </div>
       <button onclick="LD.saveSettings()" class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2.5 transition">Save settings</button>
@@ -631,11 +627,17 @@ surge ./letterdesk-publish.surge --domain your-name.surge.sh</pre>
 
 <script src="js/publish.js"></script>
 <script src="js/data.js"></script>
-<script src="js/geology.js"></script>
+<!-- Dependency order: facts → schema → profile → verify → fit → fundability → crm → geology, then app last -->
+<script src="js/facts.js"></script>
+<script src="js/schema.js"></script>
 <script src="js/profile.js"></script>
+<script src="js/verify.js"></script>
+<script src="js/fit.js"></script>
+<script src="js/fundability.js"></script>
+<script src="js/crm.js"></script>
+<script src="js/geology.js"></script>
 <script src="js/search.js"></script>
 <script src="js/draft.js"></script>
-<script src="js/facts.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

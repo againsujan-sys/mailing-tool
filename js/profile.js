@@ -92,6 +92,13 @@ var LD=(window.LD=window.LD||{});
   /* ---------- view-model for the draft engine (facts stay verbatim) ---------- */
   LD.profileForDraft = function(profId){
     P = P || mergeSaved();
+    /* Step-2 quick fields (pName/pUni/pField/pTopic/pGpa/pExp) take precedence when filled —
+       they are the same user's data, synced through LD.legacyProfileBridge / LD.basicChanged. */
+    var quick = (typeof $==="function" && $("step-2")) ? {
+      name: ($("pName")&&$("pName").value.trim())||"", uni: ($("pUni")&&$("pUni").value.trim())||"",
+      field:($("pField")&&$("pField").value.trim())||"", topic:($("pTopic")&&$("pTopic").value.trim())||"",
+      gpa:  ($("pGpa")&&$("pGpa").value.trim())||"",   exp:  ($("pExp")&&$("pExp").value.trim())||""
+    } : {};
     var sel = profId ? LD.getIntentInterests(profId) : null;
     var interests = (sel && sel.length) ? sel : LD.activeInterests();
     var edu = (P.education||[])[0] || {};
@@ -105,14 +112,14 @@ var LD=(window.LD=window.LD||{});
     var pubs = [];
     resDone.forEach(function(r){ if(r.publications && !/^(none|n\/a|-)$/i.test(String(r.publications).trim())) pubs.push(String(r.publications).trim()); });
     return {
-      name:P.basics.name, headline:P.basics.headline,
-      degree: edu.degree||"", uni: edu.institution||"", gradYear: edu.year||"",
-      grade: edu.grade||"", gpa: edu.grade||"", coursework: edu.coursework||"",
-      field: "Geology",
-      topic: topicBits.join(" · "),
+      name:quick.name||P.basics.name, headline:P.basics.headline,
+      degree: edu.degree||"", uni: quick.uni||edu.institution||"", gradYear: edu.year||"",
+      grade: quick.gpa||edu.grade||"", gpa: quick.gpa||edu.grade||"", coursework: edu.coursework||"",
+      field: quick.field||P.basics.field||"Geology",
+      topic: quick.topic||topicBits.join(" · "),
       interests: interests,
       skills: (P.skills||[]).slice(),
-      exp: expLines.join("; "),
+      exp: quick.exp||expLines.join("; "),
       researchCompleted: resDone, researchProposed: resProp,
       publications: pubs,                       // ONLY user-confirmed entries — never invented
       website: P.basics.website, email: P.contact.preferredEmail || P.basics.email,
@@ -396,7 +403,8 @@ var LD=(window.LD=window.LD||{});
 
   /* ---------- basic-field plumbing ---------- */
   LD.basicChanged=function(id){
-    var v=$(id).value.trim();
+    var el=$(id); if(!el) return;               /* quick-field bridge may name a pf* id that isn't rendered */
+    var v=el.value.trim();
     switch(id){
       case "pfName": P.basics.name=v; break;
       case "pfHeadline": P.basics.headline=v; break;
@@ -406,6 +414,11 @@ var LD=(window.LD=window.LD||{});
       case "pfLinkedin": P.basics.linkedin=v; break;
       case "pfScholar": P.basics.scholar=v; break;
       case "pfOrcid": P.basics.orcid=v; break;
+      case "pfUni": { var eu0=(P.education&&P.education[0])||(P.education[0]={}); eu0.institution=v; break; }
+      case "pfField": P.basics.field=v; break;
+      case "pfTopic": P.basics.topic=v; break;
+      case "pfGpa": { var eul=(P.education&&P.education.length)?P.education[P.education.length-1]:null; if(eul) eul.grade=v; break; }
+      case "pfExp": { var ex=P.experience&&P.experience[0]?P.experience[0]:(P.experience[0]={}); ex.responsibilities=v; break; }
       case "pfDocCV": P.docs.cv=v; break;
       case "pfDocTr": P.docs.transcript=v; break;
       case "pfDocRS": P.docs.researchStatement=v; break;

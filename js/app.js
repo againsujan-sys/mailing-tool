@@ -55,6 +55,26 @@
   }
   LD.guardExampleProfile = guardExampleProfile;
 
+  /* ---------- word-limit bounds come from js/facts.js (120–180 recommended band),
+     never hard-coded here. ctxFromUI injects the saved limit so LD.getWordLimit(ctx)
+     honours it; the meter & send-gates read state.settings.wordLimit. ---------- */
+  function effectiveWordLimit(){
+    var n = parseInt(state.settings.wordLimit,10);
+    if (LD.MIN_LIMIT!=null && LD.MAX_LIMIT!=null && !(n>=LD.MIN_LIMIT && n<=LD.MAX_LIMIT)) n = (LD.DEFAULT_LIMIT||180);
+    return n;
+  }
+  function syncWordBoundsFromFacts(){
+    if(!LD.TARGET_LOW || !LD.DEFAULT_LIMIT) return;
+    var lim = effectiveWordLimit();
+    var lo = $("wlLowBind"), hi = $("wlHighBind");
+    if(lo) lo.textContent = LD.TARGET_LOW;                    /* ≈120 — from facts.js */
+    if(hi) hi.textContent = lim;                              /* upper bound = configured limit (default 180) */
+    var wl = $("wordLimit");
+    if(wl){ if(LD.MIN_LIMIT!=null) wl.min = LD.MIN_LIMIT; if(LD.MAX_LIMIT!=null) wl.max = LD.MAX_LIMIT; }
+    var gen = $("genBtn");
+    if(gen) gen.innerHTML = "✍ Generate draft (~"+LD.TARGET_LOW+"–"+lim+" words)";
+  }
+
   /* ---------- modal ---------- */
   LD.openModal = function(id){ var m=$(id); if(m){ m.classList.remove("hidden"); m.classList.add("show"); document.body.style.overflow="hidden"; } };
   LD.closeModal = function(id){ var m=$(id); if(m){ m.classList.add("hidden"); m.classList.remove("show"); document.body.style.overflow=""; } };
@@ -315,35 +335,30 @@
   function vlabel(v){ return v==="valid"?"✓ verified":v==="likely"?"~ likely":v==="invalid"?"✗ invalid":"unverified"; }
   LD.setManualEmail = function(v){ var p=getSelected(); if(p){ p.email=v.trim(); if(p.email){ p.verified=null; LD.verifySelectedEmail(); } } };
 
-  /* ---------- feasibility scoring ---------- */
+  /* ---------- feasibility scoring (SWAPPED: the legacy heuristic "reply-likelihood"
+     point model was DELETED — it invented odds labels like "Strong odds"/"Low odds" from
+     h-index bands and guessed recruiting signals. Step 2 now delegates to
+     LD.computeResearchFit (geology.js) for the overlap number, renders sourced status
+     pills via LD.renderStatusPills / LD.renderStatusDetail (fit.js), and takes funding
+     figures only from structured records handled by fundability.js. ---------- */
   LD.updateFeasibility = updateFeasibility;
   function updateFeasibility(){
     var ring=$("feasRing"), num=$("feasNum"), list=$("feasList"), badge=$("feasBadge");
     if(!ring) return;
     var p=getSelected();
-    if(!p){ ring.style.strokeDashoffset=326.7; num.textContent="0"; badge.textContent="—"; badge.className="text-xs font-bold rounded-full px-2.5 py-1 bg-slate-100 text-slate-400"; list.innerHTML='<li class="text-slate-400">Select a professor to compute a score.</li>'; return; }
-    var rows=[]; var total=0;
-    function add(label, pts, maxPts){ pts=Math.max(-maxPts,Math.min(maxPts,pts)); total+=pts+maxPts; rows.push([label,pts,maxPts]); }
-    var overlap = LD.computeFit(p, $("pTopic").value.trim()||($("q")&&$("q").value)||"") ;
-    add("Research-topic overlap with their papers", Math.round((overlap-50)/50*20), 20);
-    add("Publishing recency (last paper "+(p.lastActive||"?")+")", p.lastActive>=2025?18:p.lastActive>=2024?13:p.lastActive>=2023?7:-4, 18);
-    var h=p.hIndex||0; add("Lab size / h-index band favors taking students", h>=45?-6 : h>=18?12 : h>=8?8 : 2, 12);
-    add("Contactable email present", p.email? (p.verified==="valid"?10:p.verified==="invalid"?-15:6) : -12, 15);
-    var hasName=$("pName").value.trim(), hasTopic=$("pTopic").value.trim(), sk=(state.skills||[]).length;
-    add("Your profile completeness", (hasName&&hasTopic?6:0)+Math.min(sk*2,8), 14);
-    add("Credentials signal (GPA/English test)", ($("pGpa").value.trim()?5:0)+(($("pEnglish").value&&!$("pEnglish").value.startsWith("None"))?5:0), 10);
-    add("Explicitly recruiting (group notes)", p.openToStudents===false?-10:(p.groupSize&&/hir|recruit|funded/i.test(p.groupSize)?8:0), 10);
-    var pct = Math.round(Math.min(97,total));
-    var C=326.7;
+    if(!p){ ring.style.strokeDashoffset=326.7; num.textContent="0"; badge.textContent="—"; badge.className="text-xs font-bold rounded-full px-2.5 py-1 bg-slate-100 text-slate-400"; list.innerHTML='<li class="text-slate-400">Select a professor to compute research fit.</li>'; return; }
+    var profile = LD.profileForDraft ? LD.profileForDraft(p.id) : { topic:$("pTopic").value.trim(), skills:state.skills };
+    var r = LD.computeResearchFit(LD.toProfessorLite ? LD.toProfessorLite(p) : p, profile || {});
+    p.researchFit = r; p.fit = r.display;
+    var ev=null; try{ ev = LD.evaluateAll(p, profile||{}); }catch(e){}
+    var C=326.7, pct=r.display||0;
     ring.style.strokeDashoffset = (C - C*pct/100);
     ring.setAttribute("stroke", pct>=75?"#10b981":pct>=55?"#3b6cf6":pct>=40?"#f59e0b":"#ef4444");
-    num.textContent=pct;
-    badge.textContent = pct>=75?"Strong odds":pct>=55?"Reasonable shot":pct>=40?"Longer shot":"Low odds";
-    badge.className = "text-xs font-bold rounded-full px-2.5 py-1 " + (pct>=75?"bg-emerald-100 text-emerald-700":pct>=55?"bg-brand-100 text-brand-700":pct>=40?"bg-amber-100 text-amber-700":"bg-rose-100 text-rose-700");
-    list.innerHTML = rows.slice(0,5).map(function(r){
-      var cls=r[1]>0?"pos":r[1]<0?"neg":"";
-      return '<li><span class="truncate pr-1">'+escapeHtml(r[0])+'</span><span class="pts '+cls+'">'+(r[1]>0?"+":"")+r[1]+'</span></li>';
-    }).join("");
+    num.textContent = r.count;   /* listed topical overlaps — NOT reply odds */
+    badge.textContent = r.count===0?"No listed overlap":r.count<=2?"Moderate overlap":r.count<=5?"Good overlap":"Strong overlap";
+    badge.className = "text-xs font-bold rounded-full px-2.5 py-1 " + (r.count>=6?"bg-emerald-100 text-emerald-700":r.count>=3?"bg-brand-100 text-brand-700":r.count>=1?"bg-amber-100 text-amber-700":"bg-rose-100 text-rose-700");
+    list.innerHTML = (ev?LD.renderStatusPills(ev,true):'<li class="text-slate-400">Status engine unavailable.</li>')+
+      '<li class="text-[10px] text-slate-400 mt-2">Research-fit display length from LD.computeResearchFit · status pills from LD.renderStatusPills (fit.js) · funding figures only from structured records in fundability.js. This is not a reply or admission likelihood.</li>';
     state.feasibility=pct;
   }
 
@@ -372,11 +387,14 @@
       profile:{ name:$("pName").value.trim(), degree:$("pDegree").value, uni:$("pUni").value.trim(), field:$("pField").value.trim(),
         topic:$("pTopic").value.trim(), skills:state.skills, exp:$("pExp").value.trim(), gpa:$("pGpa").value.trim(), english:$("pEnglish").value },
       tone:$("tone").value, ask:$("askType").value, attach:$("attach").value,
-      opts:{ linkedin:$("optLinkedIn").checked, scholar:$("optScholar").checked, available:$("optAvailable").checked, startMonth:"Fall 2026" },
+      opts:{ linkedin:$("optLinkedIn").checked, scholar:$("optScholar").checked, available:$("optAvailable").checked, startMonth:"Fall 2026",
+             wordLimit: effectiveWordLimit() },   /* facts.js LD.getWordLimit(ctx) honours this band (120–180 default) */
       variant: state.variant
     };
   }
   LD.generate = function(){
+    /* Example-guard: never generate an outreach draft for example/demonstration data. */
+    if (guardExampleProfile("draft generation")) return;
     var p=getSelected();
     if(!p){ LD.toast("Go back to Step 1 and select a professor.","err"); LD.goStep(1); return; }
     if(!$("pName").value.trim()||!$("pTopic").value.trim()){ LD.toast("Step 2 needs your name & research topic.","err"); LD.goStep(2); return; }
@@ -422,28 +440,36 @@
     $("draftBody").value=d.body||"";
     state.draftMeta={engine:engine, profId:state.selectedId, subject:d.subject, generatedAt:Date.now()};
     updateWordMeter();
-    if(engine==="groq") $("aiNotice").innerHTML="✅ Generated with <b>Groq · "+escapeHtml(state.settings.model)+"</b>, auto-trimmed under 150 words and cliché-scanned.";
+    var lim=effectiveWordLimit();
+    if(engine==="groq") $("aiNotice").innerHTML="✅ Generated with <b>Groq · "+escapeHtml(state.settings.model)+"</b>, auto-trimmed to the "+LD.TARGET_LOW+"–"+lim+"-word band (facts.js) and cliché-scanned.";
     if(engine==="local"||engine==="local-fallback") $("aiNotice").classList.add("hidden");
-    if(engine!=="prompt" && d.words>150){ $("aiNotice").classList.remove("hidden"); $("aiNotice").innerHTML+=" <b class='text-rose-700'>Over limit!</b> Trim before sending."; }
+    if(engine!=="prompt" && d.words>lim){ $("aiNotice").classList.remove("hidden"); $("aiNotice").innerHTML+=" <b class='text-rose-700'>Over limit!</b> Trim before sending."; }
   }
 
-  /* ---------- word meter + cliché scan while editing ---------- */
+  /* ---------- word meter + cliché scan while editing ----------
+     Bounds come from js/facts.js (recommended band LD.TARGET_LOW≈120 … configured limit,
+     default LD.DEFAULT_LIMIT=180) — the old hard-coded 150 is gone. */
   function updateWordMeter(){
     var t=$("draftBody").value, w=LD.countWords(t);
-    var pill=$("wcPill"); pill.textContent=w+" / 150";
-    pill.className="wc-pill "+(w>150?"over":w>=130?"warn":"");
+    var lim=effectiveWordLimit(), low=(LD.TARGET_LOW||120);
+    var pill=$("wcPill"); pill.textContent=w+" / "+lim;
+    pill.title="Target band ≈"+low+"–"+lim+" words (js/facts.js)";
+    pill.className="wc-pill "+(w>lim?"over":(w>=low?" ":"warn"));
     var cl=LD.findCliches(t);
     var cp=$("clichePill"); cp.textContent="clichés: "+cl.length;
     cp.className="shrink-0 text-[11px] font-bold rounded-full px-2.5 py-1 "+(cl.length?"bg-rose-100 text-rose-700":"bg-emerald-50 text-emerald-700");
     cp.title=cl.join(" | ");
     $("readTime").textContent="~"+Math.max(5,Math.round(w/3.5))+"s read";
+    syncWordBoundsFromFacts();
   }
   document.addEventListener("DOMContentLoaded", function(){
     var ta=$("draftBody"); if(ta){ ta.addEventListener("input",updateWordMeter); }
     ["pName","pTopic","pGpa","pExp","pUni","pField"].forEach(function(id){ var el=$(id); if(el) el.addEventListener("input",function(){ updateFeasibility(); saveProfile(); }); });
     ["pDegree","pRole","pEnglish"].forEach(function(id){ var el=$(id); if(el) el.addEventListener("change",function(){ updateFeasibility(); saveProfile(); }); });
     var q=$("q"); if(q) q.addEventListener("keydown",function(e){ if(e.key==="Enter") LD.search(); });
-    loadPersisted(); renderStipends(); renderPipeline(); updateFeasibility();
+    loadPersisted(); renderPipeline(); updateFeasibility();
+    syncStep2QuickFields();   /* Step-2 quick fields ↔ profile.js canonical store */
+    syncWordBoundsFromFacts();
     $("hdr-count-n").textContent=state.pipeline.length;
   });
 
@@ -493,8 +519,10 @@
     document.body.appendChild(a); a.click(); a.remove(); LD.toast("Downloaded .txt","ok");
   };
   LD.openMailto = function(){
+    /* Example-guard: mailto is a live-outreach action — blocked for demonstration data. */
+    if (guardExampleProfile("mailto outreach")) return;
     var p=getSelected(); if(!p){ LD.toast("Select a professor first.","err"); return; }
-    if(LD.countWords($("draftBody").value)>150){ LD.toast("Trim below 150 words before sending 😉","err"); return; }
+    if(LD.countWords($("draftBody").value)>effectiveWordLimit()){ LD.toast("Trim below "+LD.TARGET_LOW+"–"+effectiveWordLimit()+" words before sending 😉","err"); return; }
     if(!p.email){ LD.toast("No email on record — add one in Step 2.","err"); return; }
     var body=$("draftBody").value.replace(/\n/g,"%0D%0A");
     window.location.href="mailto:"+encodeURIComponent(p.email)+"?subject="+encodeURIComponent($("subj").value)+"&body="+body;
@@ -507,9 +535,11 @@
 
   /* ---------- pipeline ---------- */
   LD.saveToPipeline = function(){
+    /* Example-guard: CRM pipeline tracking must never contain example/demonstration records. */
+    if (guardExampleProfile("CRM pipeline tracking")) return;
     var p=getSelected(); var body=$("draftBody").value.trim();
     if(!p||!body){ LD.toast("Need a selected professor + generated draft.","err"); return; }
-    var w=LD.countWords(body); if(w>150){ LD.toast("Draft is "+w+" words — trim under 150 first.","err"); return; }
+    var lim=effectiveWordLimit(); var w=LD.countWords(body); if(w>lim){ LD.toast("Draft is "+w+" words — trim under "+lim+" first.","err"); return; }
     if(state.pipeline.some(function(x){return x.profId===p.id && x.body===body;})){ LD.toast("Already saved.","info"); return; }
     state.pipeline.unshift({ id:"pl"+Date.now(), profId:p.id, profName:p.name, uni:p.uni, email:p.email, subject:$("subj").value, body:body, words:w, status:"notsent", feas:state.feasibility||p.fit||0, at:new Date().toLocaleDateString() });
     ls("ld_pipeline",state.pipeline); renderPipeline(); $("hdr-count-n").textContent=state.pipeline.length;
@@ -541,12 +571,27 @@
     }).join("");
   }
 
-  /* ---------- stipend table ---------- */
-  function renderStipends(){
-    var tb=$("stipendRows"); if(!tb) return;
-    tb.innerHTML=LD.STIPENDS.map(function(s){
-      return '<tr class="hover:bg-slate-50"><td class="px-4 py-2.5 font-bold">'+(LD.COUNTRY_FLAGS[s.country]||"🌐")+' '+escapeHtml(s.country)+'</td><td class="px-4 py-2.5 text-emerald-700 font-semibold">'+escapeHtml(s.ra)+'</td><td class="px-4 py-2.5">'+escapeHtml(s.ta)+'</td><td class="px-4 py-2.5">'+escapeHtml(s.tuition)+'</td><td class="px-4 py-2.5 text-xs text-slate-500">'+escapeHtml(s.note)+'</td></tr>';
-    }).join("");
+  /* ---------- Step-2 quick fields ↔ profile.js canonical store ----------
+     Sync via LD.legacyProfileBridge (js/profile.js): the bridge exposes the saved
+     profile as the old flat shape {name, uni, degree, field, topic, gpa, exp, skills}. */
+  function syncStep2QuickFields(){
+    if(!LD.legacyProfileBridge) return;
+    var b = {}; try{ b = LD.legacyProfileBridge() || {}; }catch(e){ return; }
+    function set(id,v){ var el=$(id); if(el && v && !el.value) el.value=v; }
+    set("pName",b.name); set("pUni",b.uni); set("pField",b.field);
+    set("pTopic",b.topic); set("pGpa",b.gpa); set("pExp",b.exp);
+    if((!state.skills || !state.skills.length) && Array.isArray(b.skills)) state.skills=b.skills.slice(0,12);
+    renderSkills();
+    /* two-way: when the user edits a Step-2 quick field, push it into profile.js's
+       canonical store so LD.profileForDraft / fundability see the same values. */
+    ["pName","pUni","pField","pTopic","pGpa","pExp"].forEach(function(id){
+      var el=$(id); if(!el) return;
+      el.addEventListener("change", function(){
+        if(!LD.basicChanged) return;
+        var map={pName:"pfName",pUni:"pfUni",pField:"pfField",pTopic:"pfTopic",pGpa:"pfGpa",pExp:"pfExp"};
+        LD.basicChanged(map[id]);
+      });
+    });
   }
 
   /* ---------- settings ---------- */
@@ -554,7 +599,17 @@
     state.settings.groqKey=$("groqKey").value.trim();
     state.settings.model=$("modelSel").value;
     state.settings.autoVerify=$("autoVerify").checked;
+    var wlEl=$("wordLimit");
+    if(wlEl){   /* clamp to facts.js bounds (LD.MIN_LIMIT–LD.MAX_LIMIT) */
+      var n=parseInt(wlEl.value,10);
+      if(LD.MIN_LIMIT!=null && LD.MAX_LIMIT!=null && !(n>=LD.MIN_LIMIT && n<=LD.MAX_LIMIT)){
+        n = Math.max(LD.MIN_LIMIT, Math.min(LD.MAX_LIMIT, isNaN(n)?LD.DEFAULT_LIMIT:n));
+        wlEl.value=n;
+      }
+      state.settings.wordLimit=n;
+    }
     ls("ld_settings",state.settings);
+    syncWordBoundsFromFacts(); updateWordMeter();
     LD.closeModal("settingsModal"); LD.toast("Settings saved locally ✓","ok");
   };
   document.addEventListener("DOMContentLoaded", function(){

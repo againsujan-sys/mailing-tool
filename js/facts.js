@@ -30,6 +30,8 @@ var LD=(window.LD=window.LD||{});
   };
   LD.TARGET_LOW = TARGET_LOW;
   LD.DEFAULT_LIMIT = DEFAULT_LIMIT;
+  LD.MIN_LIMIT = 60;   /* accepted bounds for ctx.opts.wordLimit — keep in sync with LD.getWordLimit */
+  LD.MAX_LIMIT = 400;
 
   /* ---------- body-only word count (excludes subject & signature block) ---------- */
   LD.bodyWords = function(body){
