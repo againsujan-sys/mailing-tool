@@ -113,11 +113,26 @@ var LD=(window.LD=window.LD||{});
     var manifest=[];
     var lines=[];
 
+    /* TARGET degree vocabulary — me.degree is the degree the user is APPLYING FOR and
+       me.uni is the CURRENT institution, so the draft must never claim completion. */
+    function normTargetDegree(d){
+      d = String(d||"").trim().toLowerCase();
+      if(!d) return "";
+      if(/phd|doctoral|ph\.d/.test(d)) return "PhD";
+      if(/postdoc|post-doc|postdocoral|fellowship/.test(d)) return "Postdoc";
+      if(/msc|master|m\.s|masters/.test(d)) return "MSc";
+      return d.charAt(0).toUpperCase()+d.slice(1);
+    }
+    var targetDeg = normTargetDegree(me.targetDegree || me.degree) || "MSc";
+    var rolePhrase = targetDeg==="PhD" ? "PhD student"
+                   : targetDeg==="Postdoc" ? "postdoctoral researcher"
+                   : targetDeg+" student";
+
     /* --- greeting + who I am (only confirmed profile facts) --- */
     lines.push("Dear Prof. "+ln+",");
-    var intro = "My name is "+(me.name||"[your name]")+(me.uni?", I completed "+(me.degree||"my degree")+" at "+me.uni:"")+".";
-    if(intake) intro += " I am applying for thesis-based MSc places starting "+intake+".";
-    else intro += " I am looking for a thesis-based MSc place.";
+    var intro = "My name is "+(me.name||"[your name]")+(me.uni?", applying to work with your group with a background in "+((me.field||"").trim()||me.degree||"my field")+" at "+me.uni:"")+".";
+    if(intake) intro += " I am seeking "+targetDeg+" places starting "+intake+".";
+    else intro += " I am looking for a "+targetDeg+" place.";
     lines.push(intro);
 
     /* --- research connection: MUST cite a verified paper or an evidenced method --- */
@@ -134,7 +149,7 @@ var LD=(window.LD=window.LD||{});
 
     /* --- stated limitations → targeted question (shows real reading) --- */
     if(paper && (paper.limitations||paper.futureWork)){
-      lines.push("The paper notes "+(paper.limitations?("that "+shortT(paper.limitations,140)):(shortT(paper.futureWork,140)))+" — I would like to ask whether that direction is something you would consider for a master's project.");
+      lines.push("The paper notes "+(paper.limitations?("that "+shortT(paper.limitations,140)):(shortT(paper.futureWork,140)))+" — I would like to ask whether that direction is something you would consider for a "+rolePhrase+"'s project.");
       manifest.push({kind:"publication", ref:paper.doi?("https://doi.org/"+paper.doi):"", label:"Limitations/future-work statement quoted from the paper record"});
     }
 
@@ -149,12 +164,12 @@ var LD=(window.LD=window.LD||{});
       if(opp.stipend) terms.push("stipend: "+opp.stipend);
       lines.push("The advertisement states "+(terms.length?terms.join(", "):"no figures beyond what is quoted here")+" — I quote these from the posting rather than restate them.");
       manifest.push({kind:"funding", ref:opp.source&&opp.source.url, label:opp.position+" · "+(opp.source&&opp.source.url||"NO SOURCE")+" · checked "+String((opp.source&&opp.source.checkedAt)||"").slice(0,10)});
-      if(opp.eligibility) lines.push("Regarding eligibility, the call states: \u201C"+shortT(opp.eligibility,180)+"\u201D — my recorded background ("+[me.degree,me.uni,me.grade].filter(Boolean).join(", ")||"[fill your profile]")+" is what I would rely on.");
+      if(opp.eligibility) lines.push("Regarding eligibility, the call states: \u201C"+shortT(opp.eligibility,180)+"\u201D — my recorded background ("+([me.field,me.uni,me.grade].filter(Boolean).join(", ")||"[fill your profile]")+") is what I would rely on.");
       lines.push("Could you confirm whether I would be a suitable candidate for this position, and whether supervision capacity remains for the "+(intake||"advertised")+" intake?");
     } else {
       /* ---------- PATHWAY 2: proactive inquiry, funding UNKNOWN ---------- */
       var lvl = LD.fundingStatus(prof).band;
-      lines.push("I understand this may not be an advertised position. My question is practical: are you planning to take a master's student for the "+(intake||"next")+" intake, and if so, is there — or could there be — funding attached (project assistantship, scholarship call, or teaching support)?");
+      lines.push("I understand this may not be an advertised position. My question is practical: are you planning to take a "+rolePhrase+" for the "+(intake||"next")+" intake, and if so, is there — or could there be — funding attached (project assistantship, scholarship call, or teaching support)?");
       manifest.push({kind:"funding", ref:(prof.fundingEvidence&&prof.fundingEvidence[0]&&prof.fundingEvidence[0].url)||"",
         label:"Funding evidence status: "+lvl+(lvl==="none"?" — the draft therefore ASKS and implies nothing":"")});
     }
@@ -179,7 +194,7 @@ var LD=(window.LD=window.LD||{});
     var limit = LD.getWordLimit?LD.getWordLimit(opts):180;
     if(LD.enforceLimitBody) body = LD.enforceLimitBody(body,limit);
 
-    var subjBits = ["MSc", (mode==="vacancy"? (opp&&opp.position||"funded vacancy") : (interests[0]||me.topic||"research inquiry")), intake].filter(Boolean);
+    var subjBits = [targetDeg, (mode==="vacancy"? (opp&&opp.position||"funded vacancy") : (interests[0]||me.topic||"research inquiry")), intake].filter(Boolean);
     return { ok:true, mode:mode, subject:cap(subjBits.join(" — ")).slice(0,90), body:body,
              words:LD.countWords(body), wordLimit:limit, cliches:LD.findCliches(body),
              manifest:manifest, paperUsed:paper, opportunityUsed:opp, policyUsed:pol };
